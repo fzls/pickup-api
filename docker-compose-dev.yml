@@ -5,6 +5,9 @@ services:
     web:
         ports:
             - 80
+    lb:
+        ports:
+            - 1936
     # the workers
     php:
         build:
