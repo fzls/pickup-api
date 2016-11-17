@@ -1,0 +1,17 @@
+# dev version, should be used with common config file
+version: '2'
+services:
+    # receive http connection from client
+    web:
+        ports:
+            - 80
+    # the workers
+    php:
+        build:
+            context: ./docker/php
+            args:
+                - INSTALL_XDEBUG=true
+                - INSTALL_OPCACHE=true
+                - INSTALL_MEMCACHED=false
+        image: fzls/php:dev
+

@@ -1,0 +1,69 @@
+<?php
+
+namespace PickupApi\Http\Middleware;
+
+use Carbon\Carbon;
+use Closure;
+use GuzzleHttp\Client;
+use PickupApi\Exceptions\InvalidApiTokenException;
+use PickupApi\Http\Meta;
+use PickupApi\Http\RestResponse;
+/*re: 先去进行容器化，从而避免在xampp中从api处调用auth服务器时共享一个.env，而导致数据库的存取出现错误
+TODO: 完成容器化-----验证token是否有效（验证身份）-----验证token是否可以进行某项操作，即scope（验证权限）
+*/
+class VerifyApiToken {
+    public $auth_uri;
+
+    public $token_uri;
+
+    /**
+     * VerifyApiToken constructor.
+     *
+     */
+    public function __construct() {
+        $this->auth_uri  = \Config::get('auth.server') . '/oauth/authorize';
+        $this->token_uri = \Config::get('auth.server') . '/oauth/tokens';
+    }
+
+
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure                 $next
+     *
+     * @return mixed
+     * @throws InvalidApiTokenException
+     */
+    public function handle($request, Closure $next) {
+        /*检查token是否有效，若无效则提示客户端去认证服务器获取token*/
+        if (! $this->isValid($request->bearerToken())) {
+            $meta = new Meta(401, 'Invalid token, please refer to ' . $this->auth_uri . ' to get new token');
+
+            throw new InvalidApiTokenException($meta);
+        }
+
+        return $next($request);
+    }
+
+    public function isValid($token) {
+        /*检测是否为空*/
+        if (empty($token)) {
+            return false;
+        }
+
+        /*向认证服务器查询token信息，并缓存查询结果*/
+        $token_info = \Cache::remember($token, 10, function () use ($token) {
+            $http = new Client();
+
+            return json_decode($http->get($this->token_uri . '/' . $token)->getBody(), true);
+        });
+
+        /*检查token的有效性*/
+        if (empty($token_info) || $token_info["revoked"] || Carbon::now()->gt($token_info['expires_at'])) {
+            return false;
+        }
+
+        return true;
+    }
+}

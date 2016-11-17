@@ -1,0 +1,8 @@
+# prod version, should be used with common config file
+version: '2'
+# TODO: try to use volumes instead of mount
+services:
+    # receive http connection from client
+    web:
+        ports:
+            - 80:80
