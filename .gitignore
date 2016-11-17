@@ -7,5 +7,5 @@ Homestead.json
 /data
 #/storage
 #/bootstrap/cache
-compiled.php
+/bootstrap/compiled.php
 /.idea
