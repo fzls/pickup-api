@@ -1,0 +1,24 @@
+# ad-hoc settings
+version: '2'
+services:
+    db:
+        environment:
+            - MYSQL_DATABASE=pickup_api
+            - MYSQL_ROOT_PASSWORD=meow_meow_meow
+            - MYSQL_USER=pickup_api
+            - MYSQL_PASSWORD=meow_meow_meow
+    volumes_code:
+        volumes:
+            - .:/code
+    volumes_data:
+        volumes:
+            - ./data/db:/var/lib/mysql
+    web:
+        volumes:
+            - ./docker/nginx/site.conf:/etc/nginx/conf.d/default.conf
+            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+    lb:
+        environment:
+            - MODE=tcp
+            - STATS_AUTH=meow:meow
+            - STATS_PORT=1936

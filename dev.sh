@@ -1,2 +1,2 @@
 #!/bin/bash
-docker-compose -f docker-compose-common.yml -f docker-compose-dev.yml $@
+docker-compose -f docker-compose-base.yml -f docker-compose-custom.yml -f docker-compose-dev.yml $@

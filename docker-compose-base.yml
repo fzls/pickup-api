@@ -11,9 +11,6 @@ services:
     web:
         image: nginx
         restart: always
-        volumes:
-            - ./docker/nginx/site.conf:/etc/nginx/conf.d/default.conf
-            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
         volumes_from:
             - volumes_code
         depends_on:
@@ -24,16 +21,10 @@ services:
     lb:
         image: dockercloud/haproxy
         restart: always
-        ports:
-            - 1936:1936
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
         links:
             - php
-        environment:
-            - MODE=tcp
-            - STATS_AUTH=meow:meow
-            - STATS_PORT=1936
         networks:
             - front_tier
             - back_tier
@@ -74,24 +65,15 @@ services:
             - volumes_data
         restart: always
         # set master/slave
-        environment:
-            - MYSQL_DATABASE=pickup_api
-            - MYSQL_ROOT_PASSWORD=meow_meow_meow
-            - MYSQL_USER=pickup_api
-            - MYSQL_PASSWORD=meow_meow_meow
         networks:
             - back_tier
     volumes_code:
         image: tianon/true
-        volumes:
-            - .:/code
         networks:
             - front_tier
             - back_tier
     volumes_data:
         image: tianon/true
-        volumes:
-            - ./data/db:/var/lib/mysql
         networks:
             - back_tier
 networks:
