@@ -61,10 +61,15 @@ class VerifyApiToken {
         });
 
         /*检查token的有效性*/
-        if (empty($token_info) || $token_info["revoked"] || Carbon::now()->gt($token_info['expires_at'])) {
+        if (empty($token_info) || $token_info["revoked"] || $this->expired($token_info['expires_at'])) {
             return false;
         }
 
         return true;
+    }
+
+    public function expired($expires_at){
+        $expires_at = new Carbon($expires_at);
+        return Carbon::now()->gt($expires_at);
     }
 }

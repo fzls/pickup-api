@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2016-11-07.
+    * Generated on 2016-11-18.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -43,7 +43,7 @@ namespace PHPSTORM_META {
             'command.ide-helper.meta' instanceof \Barryvdh\LaravelIdeHelper\Console\MetaCommand,
             'blade.compiler' instanceof \Illuminate\View\Compilers\BladeCompiler,
             'Illuminate\Broadcasting\BroadcastManager' instanceof \Illuminate\Broadcasting\BroadcastManager,
-            'Illuminate\Contracts\Broadcasting\Broadcaster' instanceof \Illuminate\Broadcasting\Broadcasters\LogBroadcaster,
+            'Illuminate\Contracts\Broadcasting\Broadcaster' instanceof \Illuminate\Broadcasting\Broadcasters\RedisBroadcaster,
             'Illuminate\Bus\Dispatcher' instanceof \Illuminate\Bus\Dispatcher,
             'cache' instanceof \Illuminate\Cache\CacheManager,
             'cache.store' instanceof \Illuminate\Cache\Repository,
@@ -110,7 +110,7 @@ namespace PHPSTORM_META {
             'mailer' instanceof \Illuminate\Mail\Mailer,
             'Illuminate\Contracts\Pipeline\Hub' instanceof \Illuminate\Pipeline\Hub,
             'queue' instanceof \Illuminate\Queue\QueueManager,
-            'queue.connection' instanceof \Illuminate\Queue\SyncQueue,
+            'queue.connection' instanceof \Illuminate\Queue\RedisQueue,
             'command.queue.work' instanceof \Illuminate\Queue\Console\WorkCommand,
             'command.queue.restart' instanceof \Illuminate\Queue\Console\RestartCommand,
             'queue.worker' instanceof \Illuminate\Queue\Worker,
@@ -158,7 +158,7 @@ namespace PHPSTORM_META {
             'command.ide-helper.meta' instanceof \Barryvdh\LaravelIdeHelper\Console\MetaCommand,
             'blade.compiler' instanceof \Illuminate\View\Compilers\BladeCompiler,
             'Illuminate\Broadcasting\BroadcastManager' instanceof \Illuminate\Broadcasting\BroadcastManager,
-            'Illuminate\Contracts\Broadcasting\Broadcaster' instanceof \Illuminate\Broadcasting\Broadcasters\LogBroadcaster,
+            'Illuminate\Contracts\Broadcasting\Broadcaster' instanceof \Illuminate\Broadcasting\Broadcasters\RedisBroadcaster,
             'Illuminate\Bus\Dispatcher' instanceof \Illuminate\Bus\Dispatcher,
             'cache' instanceof \Illuminate\Cache\CacheManager,
             'cache.store' instanceof \Illuminate\Cache\Repository,
@@ -225,7 +225,7 @@ namespace PHPSTORM_META {
             'mailer' instanceof \Illuminate\Mail\Mailer,
             'Illuminate\Contracts\Pipeline\Hub' instanceof \Illuminate\Pipeline\Hub,
             'queue' instanceof \Illuminate\Queue\QueueManager,
-            'queue.connection' instanceof \Illuminate\Queue\SyncQueue,
+            'queue.connection' instanceof \Illuminate\Queue\RedisQueue,
             'command.queue.work' instanceof \Illuminate\Queue\Console\WorkCommand,
             'command.queue.restart' instanceof \Illuminate\Queue\Console\RestartCommand,
             'queue.worker' instanceof \Illuminate\Queue\Worker,
@@ -273,7 +273,7 @@ namespace PHPSTORM_META {
             'command.ide-helper.meta' instanceof \Barryvdh\LaravelIdeHelper\Console\MetaCommand,
             'blade.compiler' instanceof \Illuminate\View\Compilers\BladeCompiler,
             'Illuminate\Broadcasting\BroadcastManager' instanceof \Illuminate\Broadcasting\BroadcastManager,
-            'Illuminate\Contracts\Broadcasting\Broadcaster' instanceof \Illuminate\Broadcasting\Broadcasters\LogBroadcaster,
+            'Illuminate\Contracts\Broadcasting\Broadcaster' instanceof \Illuminate\Broadcasting\Broadcasters\RedisBroadcaster,
             'Illuminate\Bus\Dispatcher' instanceof \Illuminate\Bus\Dispatcher,
             'cache' instanceof \Illuminate\Cache\CacheManager,
             'cache.store' instanceof \Illuminate\Cache\Repository,
@@ -340,7 +340,7 @@ namespace PHPSTORM_META {
             'mailer' instanceof \Illuminate\Mail\Mailer,
             'Illuminate\Contracts\Pipeline\Hub' instanceof \Illuminate\Pipeline\Hub,
             'queue' instanceof \Illuminate\Queue\QueueManager,
-            'queue.connection' instanceof \Illuminate\Queue\SyncQueue,
+            'queue.connection' instanceof \Illuminate\Queue\RedisQueue,
             'command.queue.work' instanceof \Illuminate\Queue\Console\WorkCommand,
             'command.queue.restart' instanceof \Illuminate\Queue\Console\RestartCommand,
             'queue.worker' instanceof \Illuminate\Queue\Worker,
@@ -388,7 +388,7 @@ namespace PHPSTORM_META {
             'command.ide-helper.meta' instanceof \Barryvdh\LaravelIdeHelper\Console\MetaCommand,
             'blade.compiler' instanceof \Illuminate\View\Compilers\BladeCompiler,
             'Illuminate\Broadcasting\BroadcastManager' instanceof \Illuminate\Broadcasting\BroadcastManager,
-            'Illuminate\Contracts\Broadcasting\Broadcaster' instanceof \Illuminate\Broadcasting\Broadcasters\LogBroadcaster,
+            'Illuminate\Contracts\Broadcasting\Broadcaster' instanceof \Illuminate\Broadcasting\Broadcasters\RedisBroadcaster,
             'Illuminate\Bus\Dispatcher' instanceof \Illuminate\Bus\Dispatcher,
             'cache' instanceof \Illuminate\Cache\CacheManager,
             'cache.store' instanceof \Illuminate\Cache\Repository,
@@ -455,7 +455,7 @@ namespace PHPSTORM_META {
             'mailer' instanceof \Illuminate\Mail\Mailer,
             'Illuminate\Contracts\Pipeline\Hub' instanceof \Illuminate\Pipeline\Hub,
             'queue' instanceof \Illuminate\Queue\QueueManager,
-            'queue.connection' instanceof \Illuminate\Queue\SyncQueue,
+            'queue.connection' instanceof \Illuminate\Queue\RedisQueue,
             'command.queue.work' instanceof \Illuminate\Queue\Console\WorkCommand,
             'command.queue.restart' instanceof \Illuminate\Queue\Console\RestartCommand,
             'queue.worker' instanceof \Illuminate\Queue\Worker,
