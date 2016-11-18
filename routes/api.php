@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
+// RE: all the path in this file start with oauth/
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 });

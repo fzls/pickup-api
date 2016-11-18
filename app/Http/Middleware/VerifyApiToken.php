@@ -10,6 +10,7 @@ use PickupApi\Http\Meta;
 use PickupApi\Http\RestResponse;
 /*re: 先去进行容器化，从而避免在xampp中从api处调用auth服务器时共享一个.env，而导致数据库的存取出现错误
 TODO: 完成容器化-----验证token是否有效（验证身份）-----验证token是否可以进行某项操作，即scope（验证权限）
+NOTE: api服务器是生产者，不需要client id，只需要验证token，不需要负责获取token
 */
 class VerifyApiToken {
     public $auth_uri;
