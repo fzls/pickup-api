@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+/*TODO : uncomment all forign keys*/
+
 class DatabaseSeeder extends Seeder
 {
     /**

@@ -19,6 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
+Route::get('/artisan',function (){
+   Artisan::call('migrate:refresh');
+});
+
 //RE: 下面的代码作为测试本API的消费者，在生产环境中应该注释掉
 Route::get('/redirect', function () {
     $query = http_build_query([
