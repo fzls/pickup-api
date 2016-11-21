@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Recharge
+ *
+ * 充值订单记录
  */
 class Recharge extends Model
 {
@@ -20,6 +22,11 @@ class Recharge extends Model
 
     protected $guarded = [];
 
+    /**
+     * 本次充值的用户
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user() {
         return $this->belongsTo(User::class);
     }

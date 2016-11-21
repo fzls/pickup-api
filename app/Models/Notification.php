@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Notification
+ *
+ * 系统通知
  */
 class Notification extends Model
 {
@@ -21,6 +23,11 @@ class Notification extends Model
 
     protected $guarded = [];
 
+    /**
+     * 本通知的目标用户
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user() {
         return $this->belongsTo(User::class,'receiver_id');
     }

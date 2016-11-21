@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Vehicle
+ *
+ * 车辆
  */
 class Vehicle extends Model {
     protected $table      = 'vehicles';
@@ -22,10 +24,20 @@ class Vehicle extends Model {
 
     protected $guarded    = [];
 
+    /**
+     * 这辆车的主人
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user() {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * 这辆车的类型，小龟或者自行车
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function type(){
         return $this->belongsTo(VehicleType::class,'type_id');
     }

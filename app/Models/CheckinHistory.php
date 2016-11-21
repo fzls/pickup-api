@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class CheckinHistory
+ *
+ * 签到历史记录
  */
 class CheckinHistory extends Model
 {
@@ -20,6 +22,11 @@ class CheckinHistory extends Model
 
     protected $guarded = [];
 
+    /**
+     * 返回本条签到记录的用户
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user(){
         return $this->belongsTo(User::class);
     }

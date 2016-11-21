@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class HistorySnapshot
+ *
+ * 行程的快照，用于构建行程路线
  */
 class HistorySnapshot extends Model
 {
@@ -21,6 +23,11 @@ class HistorySnapshot extends Model
 
     protected $guarded = [];
 
+    /**
+     * 返回本快照对应的行程
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function history(){
         return $this->belongsTo(History::class);
     }

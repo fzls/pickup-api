@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class FrequentlyUsedLocation
+ *
+ * 用户常用的地址
  */
 class FrequentlyUsedLocation extends Model
 {
@@ -22,6 +24,11 @@ class FrequentlyUsedLocation extends Model
 
     protected $guarded = [];
 
+    /**
+     * 返回本常用地址所属的用户
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user(){
         return $this->belongsTo(User::class);
     }

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class School
+ *
+ * 用户所属的学校
  */
 class School extends Model {
     protected $table      = 'schools';
@@ -20,6 +22,11 @@ class School extends Model {
 
     protected $guarded    = [];
 
+    /**
+     * 该学校的用户们
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function users() {
         return $this->hasMany(User::class);
     }

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class GiftCategory
+ *
+ * 礼品类别
  */
 class GiftCategory extends Model
 {
@@ -22,6 +24,11 @@ class GiftCategory extends Model
 
     protected $guarded = [];
 
+    /**
+     * 返回本礼品所对应的所有礼品包
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function gift_bundles(){
         return $this->hasMany(GiftBundle::class,'gift_id');
     }
