@@ -14,21 +14,16 @@ class CreateUserFeedbacksTable extends Migration
     {
         Schema::create('user_feedbacks', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('type_id')
-                ->comment('反馈类型id');
-            $table->string('title')
-                ->comment('标题');
+            $table->unsignedInteger('user_feedback_session_id')
+                ->comment('用户反馈单号');
+            $table->unsignedInteger('user_id')
+                ->comment('用户id，可能是反馈的用户，也可以是回复的客服的用户id{比如1}');
             $table->text('content')
                 ->comment('内容');
-            $table->timestamp('processed_at')->nullable()
-                ->comment('处理于，由客服人员触发');
-            $table->timestamp('finished_at')->nullable()
-                ->comment('完成于，由用户触发');
-            $table->integer('rating')
-                ->comment('用户对本次服务的评价');
             $table->timestamps();
 
-//            $table->foreign('type_id')->references('id')->on('user_feedback_types');
+//            $table->foreign('user_feedback_session_id')->references('id')->on('user_feedback_sessions');
+//            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
