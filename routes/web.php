@@ -11,6 +11,8 @@
 |
 */
 
+use PickupApi\Models\School;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,7 +22,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::get('/artisan',function (){
-   Artisan::call('migrate:refresh');
+   Artisan::call('db:seed');
+});
+
+/*RE: 测试新功能区域*/
+Route::get('test', function (\Illuminate\Http\Request $request) {
+    $school = School::find($request->get('id'));
+    var_dump($school->toArray());
+    var_dump($school->users->toArray());
 });
 
 //RE: 下面的代码作为测试本API的消费者，在生产环境中应该注释掉
@@ -58,14 +67,4 @@ Route::get('/callback', function (\Illuminate\Http\Request $request) {
     }
 
     return $response;
-});
-
-Route::get('test', function (\Illuminate\Http\Request $request) {
-
-    // decode jwt access_token to get real access token
-    $jwt = $request->get('jwt');
-
-    $sections = explode('.', $jwt);
-    print_r(base64_decode($sections[0]));
-
 });

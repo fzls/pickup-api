@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "532ac456e689c84230f3319d758e759b",
-    "content-hash": "0732d94effc2a56b222e0a95401e3d8b",
+    "hash": "b86eebf821211a64858849c33a0fed49",
+    "content-hash": "1f28606bb24e241b6f20993c4fc1e104",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -1771,6 +1771,61 @@
                 "uuid"
             ],
             "time": "2016-10-02 15:51:17"
+        },
+        {
+            "name": "rtlopez/decimal",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rtlopez/decimal.git",
+                "reference": "cbd1b915b69c146d33848155f34fa8f897d0602f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://packagist.phpcomposer.com/files/rtlopez/decimal/cbd1b915b69c146d33848155f34fa8f897d0602f.zip",
+                "reference": "cbd1b915b69c146d33848155f34fa8f897d0602f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "RtLopez\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "rtlopez",
+                    "email": "rtlopezdev@gamil.com",
+                    "homepage": "https://github.com/rtlopez"
+                }
+            ],
+            "description": "An object oriented immutable arbitrary-precision arithmetic library for PHP",
+            "homepage": "https://github.com/rtlopez/decimal",
+            "keywords": [
+                "bcmath",
+                "big decimal",
+                "bignum",
+                "decimal",
+                "financial",
+                "gmp",
+                "immutable",
+                "large numbers",
+                "money",
+                "numbers",
+                "numeric"
+            ],
+            "time": "2016-09-29 17:25:26"
         },
         {
             "name": "swiftmailer/swiftmailer",

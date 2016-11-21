@@ -12,13 +12,103 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(PickupApi\User::class, function (Faker\Generator $faker) {
-    static $password;
+use PickupApi\Models\FrequentlyUsedLocation;
+use PickupApi\Models\School;
+use PickupApi\Models\User;
 
+$factory->define(User::class , function (Faker\Generator $faker){
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'id'=>$faker->unique()->randomNumber(4),
+        /* RE:如果单独生成该类，则需要指定外键的值，若从school附加生成该类，则无需指定*/
+        'school_id' => $faker->randomNumber(),/*如果单独生成该类，则覆盖其为 => factory(School::class)->create()->id*/
+        'description'=>$faker->text(),
+        'money'=>$faker->randomNumber(3),
+        'checkin_points'=>$faker->randomNumber(4),
+        'charm_points'=>$faker->randomNumber(4),
     ];
 });
+
+$factory->define(School::class , function (Faker\Generator $faker){
+    return [
+        'name'=>$faker->name,
+        'description'=>$faker->text()
+    ];
+});
+
+$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+    return [
+        'user_id'=>$faker->randomNumber(),
+        'name'=>$faker->name,
+        'latitude'=>$faker->latitude,
+        'longitude'=>$faker->longitude,
+    ];
+});
+
+/*TODO: start from vehicle_types*/
+
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
+//$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
+//    return [
+//        'name'=>$faker->name,
+//        'description'=>$faker->text()
+//    ];
+//});
