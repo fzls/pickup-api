@@ -12,6 +12,7 @@
 */
 
 use PickupApi\Models\School;
+use PickupApi\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,15 +22,33 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 
-Route::get('/artisan',function (){
-   Artisan::call('db:seed');
+Route::get('/artisan', function () {
+    Artisan::call('db:seed');
 });
 
 /*RE: 测试新功能区域*/
 Route::get('test', function (\Illuminate\Http\Request $request) {
     $school = School::find($request->get('id'));
-    var_dump($school->toArray());
-    var_dump($school->users->toArray());
+    $user   = $school->users[0];
+
+    return [
+        'school'                       => $school,
+        'school.users'                 => $school->users,
+        'user'                         => $user,
+        'user.school'                  => $user->school,
+        'user.vehicles'                => $user->vehicles,
+        'user.frequent_used_locations' => $user->frequent_used_locations,
+        'user.recharges'               => $user->recharges,
+        'user.withdraws'               => $user->withdraws,
+        'user.feedback_sessions'       => $user->feedback_sessions,
+        'user.message_sent'            => $user->message_sent(),
+        'user.message_received'        => $user->message_received(),
+        'user.notifications'           => $user->notifications(),
+        'user.history'                 => $user->history,
+        'user.gift_bundles_received'   => $user->gift_bundles_received,
+        'user.gift_bundles_sent'       => $user->gift_bundles_sent,
+        'user.reviews'                 => $user->reviews,
+    ];
 });
 
 //RE: 下面的代码作为测试本API的消费者，在生产环境中应该注释掉
