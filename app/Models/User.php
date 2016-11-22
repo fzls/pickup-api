@@ -18,6 +18,7 @@ class User extends Model {
 
     protected $fillable
                           = [
+            'id',
             'school_id',
             'description',
             'money',
@@ -27,6 +28,9 @@ class User extends Model {
         ];
 
     protected $guarded    = [];
+
+    /*因为这里的id是跟随认证服务器那边的id，不是本地自增，所以需要设置该值为false*/
+    public $incrementing = false;
 
     /**
      * 用户所属的学校
@@ -227,7 +231,7 @@ class User extends Model {
     /**
      * 用户的聊天记录 TODO:可能会用上面的messages替代
      *
-     * @return \Illuminate\Database\Eloquent\Builder|static
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function chats() {
         return Chat::where('sender_id', $this->id)->orWhere('receiver_id', $this->id);

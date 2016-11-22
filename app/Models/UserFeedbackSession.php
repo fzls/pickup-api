@@ -44,4 +44,13 @@ class UserFeedbackSession extends Model
     public function type(){
         return $this->belongsTo(UserFeedbackType::class, 'type_id');
     }
+
+    /**
+     * 获取该会话所对应的所有用户与客服之间的对话
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function feedbacks(){
+        return $this->hasMany(UserFeedback::class);
+    }
 }

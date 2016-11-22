@@ -31,4 +31,13 @@ class UserFeedback extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * 获取该反馈对话所对应的会话
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function session(){
+        return $this->belongsTo(UserFeedbackSession::class);
+    }
 }

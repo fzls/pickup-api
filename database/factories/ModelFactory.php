@@ -32,25 +32,41 @@ use PickupApi\Models\Vehicle;
 use PickupApi\Models\VehicleType;
 use PickupApi\Models\Withdraw;
 
+/**
+ * 通过随机掷骰子确定该timestamp字段是否应设为当前值或null
+ *
+ * @param $ratio
+ *
+ * @return null|Carbon
+ */
+function set_current_time_if_win_lottery($ratio = 0.1) {
+    return random_int(0, 100) <= $ratio * 100 ? Carbon::now() : null;
+}
+
+/*用户*/
 $factory->define(User::class, function (Faker\Generator $faker) {
     return [
         'id'             => $faker->unique()->randomNumber(4),
         /* RE:如果单独生成该类，则需要指定外键的值，若从school附加生成该类，则无需指定*/
         'school_id'      => $faker->randomNumber(),/*如果单独生成该类，则覆盖其为 => factory(School::class)->create()->id*/
-        'description'    => $faker->text(),
+        'description'    => $faker->realText(),
         'money'          => $faker->randomNumber(3),
         'checkin_points' => $faker->randomNumber(4),
         'charm_points'   => $faker->randomNumber(4),
+        'freezed_at'     => set_current_time_if_win_lottery(),
+        'deleted_at'     => set_current_time_if_win_lottery(),
     ];
 });
 
+/*学校*/
 $factory->define(School::class, function (Faker\Generator $faker) {
     return [
         'name'        => $faker->company,
-        'description' => $faker->text(),
+        'description' => $faker->realText(),
     ];
 });
 
+/*常用地点*/
 $factory->define(FrequentlyUsedLocation::class, function (Faker\Generator $faker) {
     return [
         'user_id'   => $faker->randomNumber(),
@@ -60,12 +76,14 @@ $factory->define(FrequentlyUsedLocation::class, function (Faker\Generator $faker
     ];
 });
 
+/*车辆类型*/
 $factory->define(VehicleType::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->lastName,
     ];
 });
 
+/*车辆*/
 $factory->define(Vehicle::class, function (Faker\Generator $faker) {
     return [
         'user_id' => $faker->randomNumber(),
@@ -75,6 +93,7 @@ $factory->define(Vehicle::class, function (Faker\Generator $faker) {
     ];
 });
 
+/*历史行程*/
 $factory->define(History::class, function (Faker\Generator $faker) {
     return [
         'passenger_id'    => $faker->randomNumber(),
@@ -85,19 +104,20 @@ $factory->define(History::class, function (Faker\Generator $faker) {
         'end_name'        => $faker->address,
         'end_latitude'    => $faker->latitude,
         'end_longitude'   => $faker->longitude,
-        'distance'        => $faker->randomFloat(6),
+        'distance'        => $faker->randomNumber(3),// 单位是km
         'elapsed_time'    => random_int(0, 3600),
-        'base_amount'     => $faker->randomNumber(),
-        'gift_amount'     => $faker->randomNumber(),
-        'penalty_amount'  => $faker->randomNumber(),
-        'started_at'      => $faker->randomElements([null, Carbon::now()]),
-        'finished_at'     => $faker->randomElements([null, Carbon::now()]),
-        'paid_at'         => $faker->randomElements([null, Carbon::now()]),
-        'reserved_at'     => $faker->randomElements([null, Carbon::now()]),
-        'canceled_at'     => $faker->randomElements([null, Carbon::now()]),
+        'base_amount'     => $faker->randomNumber(3),
+        'gift_amount'     => $faker->randomNumber(2),
+        'penalty_amount'  => $faker->randomNumber(2),
+        'started_at'      => set_current_time_if_win_lottery(),
+        'finished_at'     => set_current_time_if_win_lottery(),
+        'paid_at'         => set_current_time_if_win_lottery(),
+        'reserved_at'     => set_current_time_if_win_lottery(),
+        'canceled_at'     => set_current_time_if_win_lottery(),
     ];
 });
 
+/*行程快照*/
 $factory->define(HistorySnapshot::class, function (Faker\Generator $faker) {
     return [
         'history_id' => $faker->randomNumber(),
@@ -106,7 +126,7 @@ $factory->define(HistorySnapshot::class, function (Faker\Generator $faker) {
     ];
 });
 
-
+/*充值订单*/
 $factory->define(Recharge::class, function (Faker\Generator $faker) {
     return [
         'user_id' => $faker->randomNumber(),
@@ -114,6 +134,7 @@ $factory->define(Recharge::class, function (Faker\Generator $faker) {
     ];
 });
 
+/*提现订单*/
 $factory->define(Withdraw::class, function (Faker\Generator $faker) {
     return [
         'user_id' => $faker->randomNumber(),
@@ -121,23 +142,26 @@ $factory->define(Withdraw::class, function (Faker\Generator $faker) {
     ];
 });
 
+/*礼品类别*/
 $factory->define(GiftCategory::class, function (Faker\Generator $faker) {
     return [
         'name'        => $faker->lastName,
-        'description' => $faker->text(),
+        'description' => $faker->realText(),
         'pic'         => $faker->imageUrl(),
         'price'       => $faker->randomNumber(1),
     ];
 });
 
+/*礼品包*/
 $factory->define(GiftBundle::class, function (Faker\Generator $faker) {
     return [
         'history_id' => $faker->randomNumber(),
         'gift_id'    => $faker->randomNumber(),
-        'amount'     => $faker->randomNumber(),
+        'amount'     => $faker->randomNumber(2),
     ];
 });
 
+/*评论与评价*/
 $factory->define(Review::class, function (Faker\Generator $faker) {
     return [
         'history_id'  => $faker->randomNumber(),
@@ -148,17 +172,20 @@ $factory->define(Review::class, function (Faker\Generator $faker) {
     ];
 });
 
+/*用户反馈会话*/
 $factory->define(UserFeedbackSession::class, function (Faker\Generator $faker) {
     return [
         'type_id'      => $faker->randomNumber(),
         'user_id'      => $faker->randomNumber(),
         'title'        => $faker->title,
         'content'      => $faker->realText(),
-        'processed_at' => $faker->randomElements([null, Carbon::now()]),
-        'finished_at'  => $faker->randomElements([null, Carbon::now()]),
+        'rating'       => random_int(0, 5),
+        'processed_at' => set_current_time_if_win_lottery(),
+        'finished_at'  => set_current_time_if_win_lottery(),
     ];
 });
 
+/*用户反馈对话*/
 $factory->define(UserFeedback::class, function (Faker\Generator $faker) {
     return [
         'user_feedback_session_id' => $faker->randomNumber(),
@@ -167,6 +194,7 @@ $factory->define(UserFeedback::class, function (Faker\Generator $faker) {
     ];
 });
 
+/*用户反馈类型*/
 $factory->define(UserFeedbackType::class, function (Faker\Generator $faker) {
     return [
         'name'        => $faker->realText(10),
@@ -174,25 +202,28 @@ $factory->define(UserFeedbackType::class, function (Faker\Generator $faker) {
     ];
 });
 
+/*用户聊天*/
 $factory->define(Chat::class, function (Faker\Generator $faker) {
     return [
         'sender_id'   => $faker->randomNumber(),
         'receiver_id' => $faker->randomNumber(),
         'content'     => $faker->realText(),
-        'recalled_at' => $faker->randomElements([null, Carbon::now()]),
-        'deleted_at'  => $faker->randomElements([null, Carbon::now()]),
+        'recalled_at' => set_current_time_if_win_lottery(),
+        'deleted_at'  => set_current_time_if_win_lottery(),
     ];
 });
 
+/*系统通知*/
 $factory->define(Notification::class, function (Faker\Generator $faker) {
     return [
         'receiver_id' => $faker->randomNumber(),
         'content'     => $faker->realText(),
-        'read_at'     => $faker->randomElements([null, Carbon::now()]),
-        'deleted_at'  => $faker->randomElements([null, Carbon::now()]),
+        'read_at'     => set_current_time_if_win_lottery(),
+        'deleted_at'  => set_current_time_if_win_lottery(),
     ];
 });
 
+/*签到信息*/
 $factory->define(CheckinHistory::class, function (Faker\Generator $faker) {
     return [
         'user_id'         => $faker->randomNumber(),
@@ -203,13 +234,13 @@ $factory->define(CheckinHistory::class, function (Faker\Generator $faker) {
 //$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
 //    return [
 //        'name'=>$faker->name,
-//        'description'=>$faker->text()
+//        'description'=>$faker->realText()
 //    ];
 //});
 
 //$factory->define(FrequentlyUsedLocation::class , function (Faker\Generator $faker){
 //    return [
 //        'name'=>$faker->name,
-//        'description'=>$faker->text()
+//        'description'=>$faker->realText()
 //    ];
 //});
