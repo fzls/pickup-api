@@ -28,6 +28,7 @@ Route::get('/artisan', function () {
 
 /*RE: 测试新功能区域*/
 Route::get('test', function (\Illuminate\Http\Request $request) {
+    Bugsnag::notifyError('ErrorType', 'Test Error');
     $school = School::find($request->get('id'));
     $user   = $school->users[0];
 
