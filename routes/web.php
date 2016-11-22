@@ -28,28 +28,28 @@ Route::get('/artisan', function () {
 
 /*RE: 测试新功能区域*/
 Route::get('test', function (\Illuminate\Http\Request $request) {
-    Bugsnag::notifyError('ErrorType', 'Test Error');
-    $school = School::find($request->get('id'));
-    $user   = $school->users[0];
-
-    return [
-        'school'                       => $school,
-        'school.users'                 => $school->users,
-        'user'                         => $user,
-        'user.school'                  => $user->school,
-        'user.vehicles'                => $user->vehicles,
-        'user.frequent_used_locations' => $user->frequent_used_locations,
-        'user.recharges'               => $user->recharges,
-        'user.withdraws'               => $user->withdraws,
-        'user.feedback_sessions'       => $user->feedback_sessions,
-        'user.message_sent'            => $user->message_sent(),
-        'user.message_received'        => $user->message_received(),
-        'user.notifications'           => $user->notifications(),
-        'user.history'                 => $user->history,
-        'user.gift_bundles_received'   => $user->gift_bundles_received,
-        'user.gift_bundles_sent'       => $user->gift_bundles_sent,
-        'user.reviews'                 => $user->reviews,
-    ];
+    return config('auth.server');
+//    $school = School::find($request->get('id'));
+//    $user   = $school->users[0];
+//
+//    return [
+//        'school'                       => $school,
+//        'school.users'                 => $school->users,
+//        'user'                         => $user,
+//        'user.school'                  => $user->school,
+//        'user.vehicles'                => $user->vehicles,
+//        'user.frequent_used_locations' => $user->frequent_used_locations,
+//        'user.recharges'               => $user->recharges,
+//        'user.withdraws'               => $user->withdraws,
+//        'user.feedback_sessions'       => $user->feedback_sessions,
+//        'user.message_sent'            => $user->message_sent(),
+//        'user.message_received'        => $user->message_received(),
+//        'user.notifications'           => $user->notifications(),
+//        'user.history'                 => $user->history,
+//        'user.gift_bundles_received'   => $user->gift_bundles_received,
+//        'user.gift_bundles_sent'       => $user->gift_bundles_sent,
+//        'user.reviews'                 => $user->reviews,
+//    ];
 });
 
 //RE: 下面的代码作为测试本API的消费者，在生产环境中应该注释掉
@@ -61,13 +61,13 @@ Route::get('/redirect', function () {
                                   'scope'         => '',
                               ]);
 
-    return redirect('http://www.chenji-meow.cn:32783/oauth/authorize?' . $query);
+    return redirect(config('auth.server').'/oauth/authorize?' . $query);
 });
 
 Route::get('/callback', function (\Illuminate\Http\Request $request) {
     $http = new GuzzleHttp\Client;
 
-    $response = $http->post('http://www.chenji-meow.cn:32783/oauth/token', [
+    $response = $http->post(config('auth.server').'/oauth/token', [
         'form_params' => [
             'grant_type'    => 'authorization_code',
             'client_id'     => '4',
