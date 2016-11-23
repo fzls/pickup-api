@@ -82,6 +82,15 @@ class DatabaseSeeder extends Seeder {
                 },
             ]
         );
+        /*添加一个用于测试的用户，其id为1*/
+        $users []= factory(User::class)->create(
+            [
+                'id'=>1,
+                'school_id'=> function () use ($schools) {
+                    return $schools->random()->id;
+                },
+            ]
+        );
 
         /*RE： Layer 3*/
         foreach ($users as $user) {
