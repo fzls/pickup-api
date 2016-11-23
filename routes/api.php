@@ -22,6 +22,10 @@ Route::get('/test',function (Request $request){
 
 // RE: all the path in this file start with api, like /api/users
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/users','UserController@getUsersProfile');
+Route::post('/users','UserController@addNewUser');
+Route::get('/users/{user_id}','UserController@getUserProfile');
+Route::get('/me','UserController@getCurrentUserProfile');
+Route::put('/me','UserController@updateCurrentUserProfile');
+Route::patch('/me','UserController@updatePartialCurrentUserProfile');
+Route::delete('/me','UserController@markAsDeleted');

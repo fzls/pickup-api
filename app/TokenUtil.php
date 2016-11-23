@@ -72,7 +72,7 @@ class TokenUtil {
         $user = User::find($user_id);
         /*若未找到该用户，则返回错误，提示用户在本系统内创建账户（即添加应用必要的信息，如学校等）*/
         if(is_null($user)){
-            /*TODO: 返回一个可以注册相应信息的url*/
+            /*TODO: 返回一个可以注册相应信息的url, throw exception*/
             return RestResponse::error(404, '大哥哥我不认识你欸');
         }
         /*否则直接返回用户*/

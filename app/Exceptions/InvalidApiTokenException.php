@@ -12,10 +12,14 @@ namespace PickupApi\Exceptions;
 
 use Exception;
 use Illuminate\Contracts\Support\Jsonable;
+use PickupApi\Http\Meta;
+use PickupApi\Http\RestResponse;
 
 class InvalidApiTokenException extends Exception implements Jsonable {
+    /**
+     * @var Meta $meta
+     */
     public $meta;
-    public $data;
 
     /**
      * InvalidApiTokenException constructor.
@@ -23,9 +27,8 @@ class InvalidApiTokenException extends Exception implements Jsonable {
      * @param $meta
      * @param $data
      */
-    public function __construct($meta, $data=null) {
+    public function __construct($meta) {
         $this->meta = $meta;
-        $this->data = $data;
     }
 
 
@@ -37,8 +40,5 @@ class InvalidApiTokenException extends Exception implements Jsonable {
      * @return string
      */
     public function toJson($options = 0) {
-        return json_encode([
-            'meta'=>$this->meta,
-            'data'=>$this->data,
-                           ]);
+        return RestResponse::exception($this->meta->getCode(),$this->meta->getMessage())->toJson();
     }}
