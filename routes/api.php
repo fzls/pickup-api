@@ -29,3 +29,4 @@ Route::get('/me','UserController@getCurrentUserProfile');
 Route::put('/me','UserController@updateCurrentUserProfile');
 Route::patch('/me','UserController@updatePartialCurrentUserProfile');
 Route::delete('/me','UserController@markAsDeleted');
+Route::post('/me','UserController@markAsActivated');

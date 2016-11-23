@@ -10,9 +10,12 @@ namespace PickupApi\Exceptions;
 
 
 use Illuminate\Contracts\Support\Jsonable;
+use PickupApi\Http\Meta;
 use PickupApi\Http\RestResponse;
 
 class PickupApiException extends \Exception implements Jsonable {
+    public $meta;
+
     /**
      * PickupApiException constructor.
      *
@@ -20,8 +23,7 @@ class PickupApiException extends \Exception implements Jsonable {
      * @param string $message
      */
     public function __construct($code=404, $message='Meow? 主人様要找的东西不见啦~') {
-        $this->code=$code;
-        $this->message=$message;
+        $this->meta=new Meta($code,$message);
     }
 
 
@@ -33,5 +35,5 @@ class PickupApiException extends \Exception implements Jsonable {
      * @return string
      */
     public function toJson($options = 0) {
-        return RestResponse::exception($this->getCode(),$this->getMessage())->toJson();
+        return RestResponse::exception($this->meta->getCode(),$this->meta->getMessage())->toJson();
     }}

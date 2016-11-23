@@ -17,11 +17,11 @@ class CreateUsersTable extends Migration {
                   ->comment('学校id');
             $table->text('description')->nullable()
                   ->comment('自我介绍');
-            $table->decimal('money', 13, 4)
+            $table->decimal('money', 13, 4)->default(0)
                   ->comment('余额');
-            $table->unsignedInteger('checkin_points')
+            $table->unsignedInteger('checkin_points')->default(0)
                   ->comment('签到赠送的积分，可在购买礼物时使用(1000积分等于1RMB，每次赠送100~500(暂定))');
-            $table->unsignedInteger('charm_points')
+            $table->unsignedInteger('charm_points')->default(0)
                   ->comment('魅力值 //仅更新，和当redis中无该记录时取回');
             $table->timestamp('freezed_at')->nullable()->default(null)
                   ->comment('冻结于');

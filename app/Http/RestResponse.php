@@ -10,6 +10,7 @@ namespace PickupApi\Http;
 
 
 use Illuminate\Contracts\Support\Jsonable;
+use PickupApi\Models\User;
 
 class RestResponse implements Jsonable {
     /**
@@ -20,7 +21,6 @@ class RestResponse implements Jsonable {
     public $data;
 
     public $pagination;
-
     /**
      * RestResponse constructor.
      *
@@ -76,6 +76,63 @@ class RestResponse implements Jsonable {
      */
     public static function exception($code=404, $message='Meow? 主人様要找的东西不见啦~'){
         return self::error($code,$message);
+    }
+
+    /**
+     * 返回分页的数据
+     *
+     * @param $query \Illuminate\Database\Eloquent\Builder
+     *
+     * @return RestResponse
+     * @throws \InvalidArgumentException
+     */
+    public static function paginated($query){
+        /*TODO: 对于集合类资源，实现下列功能
+                [ ] 选择
+                [ ] 投影
+                [ ] 排序
+                [X] 分页
+        */
+        /*选择符合条件的集合*/
+        $filter = \Request::input('filter');
+        if($filter){
+            self::filter($query,$filter);
+        }
+
+        /*投影所需的字段*/
+        $projection = \Request::input('projection');
+        if($projection){
+            self::projection($query,$projection);
+        }
+
+        /*对结果进行排序*/
+        $sort = \Request::input('sort');
+        if($sort){
+            self::sort($query,$sort);
+        }
+
+        /*获取每页数目*/
+        $per_page =  \Request::input('per_page') ?: (new User())->getPerPage();
+        /*获取当前页面的信息，并将系统默认的分页类结果改为数组类型*/
+        $data_with_pagination = $query->paginate($per_page)->appends(compact('filter','projection','per_page','sort'))->toArray();
+        /*将数据与分页情况分离*/
+        $data = $data_with_pagination['data'];
+        unset($data_with_pagination['data']);
+        $pagination = $data_with_pagination;
+        /*返回分离后的数据*/
+        return self::json($data,$pagination);
+    }
+
+    private static function filter(&$query, $filter) {
+        /*TODO: 添加搜索选择功能*/
+    }
+
+    private static function projection(&$query, $projection) {
+        /*TODO：添加投影部分字段功能*/
+    }
+
+    private static function sort(&$query, $sort) {
+        /*TODO：添加排序功能*/
     }
 
     /**

@@ -69,14 +69,18 @@ class TokenUtil {
      * @return User
      * @throws \PickupApi\Exceptions\UserNotFountException
      */
-    public static function getUser(){
+    public static function getUser($with_trashed=false){
         /*试图在应用服务器中查询该用户的信息*/
         $user_id = self::getUserInfo()['id'];
-        $user = User::find($user_id);
+        $user = User::query()->withTrashed()->find($user_id);
         /*若未找到该用户，则返回错误，提示用户在本系统内创建账户（即添加应用必要的信息，如学校等）*/
         if(is_null($user)){
             /*TODO: 返回一个可以注册相应信息的url, throw exception UserNotFountException*/
             throw new UserNotFountException();
+        }
+        /*若用户账户已被注销，则返回相应的提示*/
+        if($user->trashed() &&  !$with_trashed){
+            throw new UserNotFountException(404, '主人很久以前已经抛弃人家了，真的不要人家了嘛？ 到 post '.\Request::getHttpHost().'/me 就可以继续跟我玩啦');
         }
         /*否则直接返回用户*/
         return $user;
