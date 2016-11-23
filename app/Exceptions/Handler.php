@@ -4,6 +4,7 @@ namespace PickupApi\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use PickupApi\Http\RestResponse;
@@ -50,12 +51,13 @@ class Handler extends ExceptionHandler {
             return response()->json($exception);
         } elseif ($exception instanceof ValidationException) {
             return response()->json(RestResponse::error(422, ['validation_errors' => $exception->validator->getMessageBag()]));
+        }elseif ($exception instanceof ModelNotFoundException){
+            return response()->json(RestResponse::error(404, $exception->getMessage()));
         }
 
         /*return json only*/
-
-//        return response()->json(RestResponse::exception(500,$exception->getMessage()));
-        return parent::render($request, $exception);
+        return response()->json(RestResponse::exception(400,$exception->getMessage()));
+//        return parent::render($request, $exception);
     }
 
     /**

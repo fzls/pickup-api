@@ -50,7 +50,7 @@ class UserController extends Controller
      * @param $user_id
      */
     public function getUserProfile($user_id){
-        /*TODO*/
+        return RestResponse::json(User::findOrFail($user_id));
     }
 
     /**
