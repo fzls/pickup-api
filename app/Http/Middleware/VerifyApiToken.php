@@ -13,8 +13,6 @@ TODO: 完成容器化-----验证token是否有效（验证身份）-----验证to
 NOTE: api服务器是生产者，不需要client id，只需要验证token，不需要负责获取token
 */
 class VerifyApiToken {
-    public $auth_uri;
-
     public $token_uri;
 
     /**
@@ -22,7 +20,6 @@ class VerifyApiToken {
      *
      */
     public function __construct() {
-        $this->auth_uri  = \Config::get('auth.server') . '/oauth/authorize';
         $this->token_uri = \Config::get('auth.server') . '/oauth/tokens';
     }
 
@@ -39,9 +36,7 @@ class VerifyApiToken {
     public function handle($request, Closure $next) {
         /*检查token是否有效，若无效则提示客户端去认证服务器获取token*/
         if (! $this->isValid($request->bearerToken())) {
-            $meta = new Meta(401, 'Invalid token, please refer to ' . $this->auth_uri . ' to get new token');
-
-            throw new InvalidApiTokenException($meta);
+            throw new InvalidApiTokenException();
         }
 
         return $next($request);

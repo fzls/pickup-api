@@ -44,7 +44,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if($exception instanceof InvalidApiTokenException){
+        if($exception instanceof PickupApiException){
             return response()->json($exception);
         }
 

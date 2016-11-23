@@ -66,6 +66,14 @@ class RestResponse implements Jsonable {
         return self::json(null,null,$code,$message);
     }
 
+    /**
+     * 返回抛出异常情况下结果的辅助函数
+     *
+     * @param int    $code
+     * @param string $message
+     *
+     * @return RestResponse
+     */
     public static function exception($code=404, $message='Meow? 主人様要找的东西不见啦~'){
         return self::error($code,$message);
     }
