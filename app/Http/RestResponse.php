@@ -55,6 +55,18 @@ class RestResponse implements Jsonable {
     }
 
     /**
+     * 不需要返回数据时的辅助函数
+     *
+     * @param int    $code
+     * @param string $message
+     *
+     * @return RestResponse
+     */
+    public static function meta_only($code=200, $message='meow? 什么东西也没有的说呢~'){
+        return self::json(null,null,$code,$message);
+    }
+
+    /**
      * 返回发生错误情况下结果的辅助函数
      *
      * @param int    $code
@@ -63,7 +75,7 @@ class RestResponse implements Jsonable {
      * @return RestResponse
      */
     public static function error($code=404, $message='Meow? 主人様要找的东西不见啦~'){
-        return self::json(null,null,$code,$message);
+        return self::meta_only($code,$message);
     }
 
     /**

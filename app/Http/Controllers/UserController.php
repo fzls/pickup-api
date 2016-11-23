@@ -39,7 +39,7 @@ class UserController extends Controller {
         );
         User::create($this->request->all());
 
-        return RestResponse::json(null, null, 201, '新的小伙伴加入了呢');
+        return RestResponse::meta_only(201, '新的小伙伴加入了呢');
     }
 
     /**
@@ -96,7 +96,7 @@ class UserController extends Controller {
         $user = TokenUtil::getUser();
         $user->delete();
 
-        return RestResponse::json(null,null,204,'meow，主人被我藏起来了呢~');
+        return RestResponse::meta_only(204,'meow，主人被我藏起来了呢~');
     }
 
     public function markAsActivated(){
