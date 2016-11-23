@@ -4,7 +4,7 @@ namespace PickupApi\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use PickupApi\Util;
+use PickupApi\TokenUtil;
 
 /**
  * Class User
@@ -291,6 +291,6 @@ class User extends Model {
      * @return mixed
      */
     public function permissions() {
-        return Util::getUserInfo()['permissions'];
+        return TokenUtil::getUserInfo()['permissions'];
     }
 }

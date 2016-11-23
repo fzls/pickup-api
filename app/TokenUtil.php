@@ -9,6 +9,8 @@
 namespace PickupApi;
 
 
+use PickupApi\Http\Meta;
+use PickupApi\Http\RestResponse;
 use PickupApi\Models\User;
 
 /**
@@ -18,7 +20,7 @@ use PickupApi\Models\User;
  *
  * @package PickupApi
  */
-class Util {
+class TokenUtil {
     /**
      * 获取本次会话的token
      *
@@ -34,7 +36,7 @@ class Util {
      * @return mixed
      */
     public static function getPayload(){
-        return \Cache::get(self::getToken())
+        return \Cache::get(self::getToken());
     }
 
     /**
@@ -65,6 +67,15 @@ class Util {
      * @return mixed
      */
     public static function getUser(){
-        return User::find(self::getUserInfo()['id']);
+        /*试图在应用服务器中查询该用户的信息*/
+        $user_id = self::getUserInfo()['id'];
+        $user = User::find($user_id);
+        /*若未找到该用户，则返回错误，提示用户在本系统内创建账户（即添加应用必要的信息，如学校等）*/
+        if(is_null($user)){
+            /*TODO: 返回一个可以注册相应信息的url*/
+            return RestResponse::error(404, '大哥哥我不认识你欸');
+        }
+        /*否则直接返回用户*/
+        return RestResponse::json(compact('user'));
     }
 }
