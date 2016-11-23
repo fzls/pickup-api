@@ -4,6 +4,7 @@ namespace PickupApi\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use PickupApi\TokenUtil;
 
 /**
@@ -12,6 +13,8 @@ use PickupApi\TokenUtil;
  * 用户
  */
 class User extends Model {
+    use SoftDeletes;
+
     protected $table      = 'users';
 
     public    $timestamps = true;
@@ -28,6 +31,8 @@ class User extends Model {
         ];
 
     protected $guarded    = [];
+
+    protected $dates      = ['deleted_at', 'freezed_at'];
 
     /*因为这里的id是跟随认证服务器那边的id，不是本地自增，所以需要设置该值为false*/
     public $incrementing = false;
