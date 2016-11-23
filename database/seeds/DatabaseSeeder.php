@@ -36,26 +36,31 @@ class DatabaseSeeder extends Seeder {
      * @return void
      */
     public function run() {
+        $t_start = \Carbon\Carbon::now();
         /*TODO: 在config文件中设置相应的设置，并从那边获取这些配置*/
-        $cnt_school=3;
-        $cnt_vehicle_type=3;
-        $cnt_gift_category=10;
-        $cnt_feedback_type=5;
-        $cnt_user = 5;
-        $cnt_vehicle_per_user=2;
-        $cnt_frequent_used_location_per_user=3;
-        $cnt_recharge_per_user=5;
-        $cnt_withdraw_per_user=2;
-        $cnt_feedback_session_per_user=2;
-        $cnt_feedback_per_session_per_user=5;
-        $cnt_notification_per_user=6;
-        $cnt_checkin_history_per_user=8;
-        $cnt_chat=100;
-        $cnt_history=30;
-        $cnt_snapshot_per_history=10;
-        $cnt_gift_bundle_per_history=3;
-        $percent_passenger_review=80;
-        $percent_driver_review=30;
+        /*用于快速扩大初始数据规模*/
+        $scale = 1;
+
+        $cnt_school                          = 10 * $scale;
+        $cnt_vehicle_type                    = 5 * $scale;
+        $cnt_gift_category                   = 20 * $scale;
+        $cnt_feedback_type                   = 5 * $scale;
+        $cnt_user                            = 100 * $scale;
+        $cnt_vehicle_per_user                = 2 * $scale;
+        $cnt_frequent_used_location_per_user = 5 * $scale;
+        $cnt_recharge_per_user               = 20 * $scale;
+        $cnt_withdraw_per_user               = 5 * $scale;
+        $cnt_feedback_session_per_user       = 5 * $scale;
+        $cnt_feedback_per_session_per_user   = 8 * $scale;
+        $cnt_notification_per_user           = 8 * $scale;
+        $cnt_checkin_history_per_user        = 20 * $scale;
+        $cnt_chat                            = 1000 * $scale;
+        $cnt_history                         = 300 * $scale;
+        $cnt_snapshot_per_history            = 50 * $scale;
+        $cnt_gift_bundle_per_history         = 3 * $scale;
+
+        $percent_passenger_review = 80;
+        $percent_driver_review    = 30;
 
 
         // $this->call(UsersTableSeeder::class);
@@ -82,15 +87,17 @@ class DatabaseSeeder extends Seeder {
                 },
             ]
         );
-        /*添加一个用于测试的用户，其id为1*/
-        $users []= factory(User::class)->create(
-            [
-                'id'=>1,
-                'school_id'=> function () use ($schools) {
-                    return $schools->random()->id;
-                },
-            ]
-        );
+        /*为了测试需要，若不存在id为1的用户，则添加该用户*/
+        if (! User::whereId(1)->exists()) {
+            $users [] = factory(User::class)->create(
+                [
+                    'id'        => 1,
+                    'school_id' => function () use ($schools) {
+                        return $schools->random()->id;
+                    },
+                ]
+            );
+        }
 
         /*RE： Layer 3*/
         foreach ($users as $user) {
@@ -148,7 +155,7 @@ class DatabaseSeeder extends Seeder {
             );
         }
         /*创建历史行程，每次行程随之指定两位用户分别作为司机与乘客*/
-        $history       = [];
+        $history = [];
         for ($i = 0; $i < $cnt_history; ++$i) {
             list($passenger, $driver) = $users->random(2)->values();
             $history[] = factory(History::class)->create(
@@ -197,5 +204,8 @@ class DatabaseSeeder extends Seeder {
 //                                                 return factory(School::class)->create()->id;
 //                                             },
 //                                         ]);
+        $t_end = \Carbon\Carbon::now();
+        echo "initialize database use ".$t_end->diffForHumans($t_start);
+
     }
 }
