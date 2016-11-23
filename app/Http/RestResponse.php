@@ -34,6 +34,50 @@ class RestResponse implements Jsonable {
         $this->pagination = $pagination;
     }
 
+    /*定义一些常见的操作*/
+
+    /**
+     * 返回通用json结果的辅助函数
+     *
+     * @param null   $data
+     * @param null   $pagination
+     * @param int    $code
+     * @param string $message
+     *
+     * @return static
+     */
+    public static function json($data=null, $pagination=null, $code=200, $message='主人，这是你要找的蓝白胖次哟~'){
+        return new static(
+            new Meta($code, $message),
+            $data,
+            $pagination
+        );
+    }
+
+    /**
+     * 返回发生错误情况下结果的辅助函数
+     *
+     * @param int    $code
+     * @param string $message
+     *
+     * @return RestResponse
+     */
+    public static function error($code=404, $message='Meow? 主人様要找的东西不见啦~'){
+        return self::json(null,null,$code,$message);
+    }
+
+    /**
+     * 返回抛出异常情况下结果的辅助函数
+     *
+     * @param int    $code
+     * @param string $message
+     *
+     * @return RestResponse
+     */
+    public static function exception($code=404, $message='Meow? 主人様要找的东西不见啦~'){
+        return self::error($code,$message);
+    }
+
     /**
      * @return mixed
      */
@@ -63,13 +107,14 @@ class RestResponse implements Jsonable {
      *
      * @return string
      */
-    public function toJson($options = 0) {
+    public function toJson($options = JSON_PRETTY_PRINT) {
         return json_encode(
             [
                 'meta'       => $this->meta,
                 'data'       => $this->data,
                 'pagination' => $this->pagination,
-            ]
+            ],
+            $options
         );
     }
 }

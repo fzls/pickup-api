@@ -8,14 +8,8 @@
 
 namespace PickupApi\Exceptions;
 
-
-
-use Exception;
-use Illuminate\Contracts\Support\Jsonable;
-
-class InvalidApiTokenException extends Exception implements Jsonable {
-    public $meta;
-    public $data;
+class InvalidApiTokenException extends PickupApiException {
+    public $auth_uri;
 
     /**
      * InvalidApiTokenException constructor.
@@ -23,22 +17,10 @@ class InvalidApiTokenException extends Exception implements Jsonable {
      * @param $meta
      * @param $data
      */
-    public function __construct($meta, $data=null) {
-        $this->meta = $meta;
-        $this->data = $data;
+    public function __construct($code = 401, $message=null) {
+        $this->auth_uri  = \Config::get('auth.server') . '/oauth/authorize';
+        $default_message = '你不是我认识的主人，哼！ 要不去 ' . $this->auth_uri . ' 让我认识一下你？';
+
+        parent::__construct($code, $message ?: $default_message);
     }
-
-
-    /**
-     * Convert the object to its JSON representation.
-     *
-     * @param  int $options
-     *
-     * @return string
-     */
-    public function toJson($options = 0) {
-        return json_encode([
-            'meta'=>$this->meta,
-            'data'=>$this->data,
-                           ]);
-    }}
+}

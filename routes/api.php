@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use PickupApi\Http\RestResponse;
+use PickupApi\TokenUtil;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +16,16 @@ use Illuminate\Http\Request;
 */
 /* test only*/
 Route::get('/test',function (Request $request){
-    return Cache::get($request->bearerToken())['user'];
+    $user = Cache::get($request->bearerToken());
+    return RestResponse::json(compact('user'));
 });
 
 // RE: all the path in this file start with api, like /api/users
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/users','UserController@getUsersProfile');
+Route::post('/users','UserController@addNewUser');
+Route::get('/users/{user_id}','UserController@getUserProfile');
+Route::get('/me','UserController@getCurrentUserProfile');
+Route::put('/me','UserController@updateCurrentUserProfile');
+Route::patch('/me','UserController@updatePartialCurrentUserProfile');
+Route::delete('/me','UserController@markAsDeleted');
