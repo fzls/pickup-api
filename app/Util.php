@@ -43,7 +43,7 @@ class Util {
      * @return mixed
      */
     public static function getTokenInfo(){
-        return self::getPayload()['token'];
+        return self::getPayload();
     }
 
     /**

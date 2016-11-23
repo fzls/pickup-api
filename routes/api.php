@@ -12,13 +12,13 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+/* test only*/
+Route::get('/test',function (Request $request){
+    return Cache::get($request->bearerToken())['user'];
+});
 
-// RE: all the path in this file start with oauth/
+// RE: all the path in this file start with api, like /api/users
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-});
-
-Route::get('/test',function (){
-    return json_encode(['hello world']);
 });
