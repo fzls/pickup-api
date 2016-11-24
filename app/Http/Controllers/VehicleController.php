@@ -56,20 +56,25 @@ class VehicleController extends Controller {
     public function removeVehicleForCurrentUser(Vehicle $vehicle) {
         $this->makeSureVehicleBelongsToUser($vehicle);
 
+        $vehicle->delete();
+
+        return RestResponse::deleted();
     }
 
     public function getVehiclesOfThatUser(User $user) {
-
+        return RestResponse::paginated($user->vehicles()->getQuery());
     }
 
     public function getVehicleOfThatUser(User $user, Vehicle $vehicle) {
+        $this->makeSureVehicleBelongsToUser($vehicle, $user->id);
 
+        return RestResponse::single($vehicle);
     }
 
-    public function makeSureVehicleBelongsToUser($vehicle){
+    public function makeSureVehicleBelongsToUser($vehicle, $user_id = null) {
         /*检测该车是否是当前用户的*/
-        if ($vehicle->user->id !== TokenUtil::getUserId()) {
-            throw new PickupApiException(403, '喵喵喵！这不是主人様的车子啦，重新想一下？');
+        if ($vehicle->user->id !== ($user_id ?: TokenUtil::getUserId())) {
+            throw new PickupApiException(403, '喵喵喵！这不是主人様的车子啦，是不是睡迷糊了呀~？');
         }
     }
 }
