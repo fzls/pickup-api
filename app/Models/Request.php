@@ -34,4 +34,8 @@ class Request extends Model {
     protected $guarded    = [];
 
     protected $dates = ['reserved_at'];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

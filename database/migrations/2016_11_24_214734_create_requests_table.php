@@ -13,6 +13,8 @@ class CreateRequestsTable extends Migration {
     public function up() {
         Schema::create('requests', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id')
+                ->comment('发出请求的用户的id');
             $table->string('start_name')
                   ->comment('出发地点名');
             $table->decimal('start_latitude', config('app.gps_precision.total'), config('app.gps_precision.digits'))
