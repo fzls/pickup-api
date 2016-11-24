@@ -16,10 +16,9 @@ use PickupApi\TokenUtil;
 */
 /* test only*/
 Route::get('/test', function (Request $request) {
-    return RestResponse::json(\PickupApi\Utils\UrlUtil::getAllSupportedMethods(),NO_LINK_NEEDED);
-//    $token = Cache::get($request->bearerToken());
-//
-//    return RestResponse::json(compact('token'));
+//    return RestResponse::json(\PickupApi\Utils\UrlUtil::getAllSupportedMethods(),NO_LINK_NEEDED);
+    $token = Cache::get($request->bearerToken());
+    return RestResponse::json($token, PICKUP_NO_LINK_NEEDED);
 });
 
 Route::post('/test',function (\Request $request){

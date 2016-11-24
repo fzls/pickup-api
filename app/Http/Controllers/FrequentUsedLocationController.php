@@ -21,7 +21,7 @@ class FrequentUsedLocationController extends Controller {
      * 增加新的常用地点
      */
     public function addNewFrequentUsedLocation() {
-
+        /*TODO: 从这里开始啦~QAQ*/
     }
 
     /**

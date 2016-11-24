@@ -24,22 +24,29 @@ class UserController extends Controller {
     }
 
     /**
-     * 添加一个新的用户
+     * 添加一个新的用户, 即当前token所对应的用户，用于初始化应用相关信息
      */
     public function addNewUser() {
         $this->validate(
             $this->request,
             [
-                'id'             => 'required|unique:users,id',
                 'school_id'      => 'required|exists:schools,id',
                 'money'          => 'numeric|max:0',
                 'checkin_points' => 'numeric|max:0',
                 'charm_points'   => 'numeric|max:0',
             ]
         );
-        $user = User::create($this->request->all());
 
-        return RestResponse::created($user, '新的小伙伴加入了呢');
+        $id   = TokenUtil::getUserInfo()['id'];
+        $info = array_merge($this->request->all(), ['id' => $id]);
+        $user = User::find($id);
+        if ($user) {
+            /*如果用户已存在*/
+            return RestResponse::meta_only(204, '人家早就知道主人様啦~');
+        }else{
+            /*否则新建用户*/
+            return RestResponse::created(User::create($info), '新的小伙伴加入了呢');
+        }
     }
 
     /**
@@ -97,10 +104,10 @@ class UserController extends Controller {
         $user = TokenUtil::getUser();
         $user->delete();
 
-        return RestResponse::meta_only(204,'meow，主人被我藏起来了呢~');
+        return RestResponse::meta_only(204, 'meow，主人被我藏起来了呢~');
     }
 
-    public function markAsActivated(){
+    public function markAsActivated() {
         $user = TokenUtil::getUser(true);
         $user->restore();
 

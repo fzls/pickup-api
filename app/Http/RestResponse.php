@@ -8,7 +8,7 @@
 
 namespace PickupApi\Http;
 
-define('NO_LINK_NEEDED', -1);
+define('PICKUP_NO_LINK_NEEDED', -1);
 
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
@@ -75,7 +75,7 @@ class RestResponse implements Jsonable {
         /*若未提供生成个体的link的回调方法，则默认为当前url*/
         $link_callback = $link_callback ?: self::defaultLinkCallbackForSingleItem();
 
-        if ($link_callback !== NO_LINK_NEEDED) {
+        if ($link_callback !== PICKUP_NO_LINK_NEEDED) {
             $data['link'] = $link_callback($data);
         }
     }
@@ -116,7 +116,7 @@ class RestResponse implements Jsonable {
      * @return RestResponse
      */
     public static function meta_only($code = 200, $message = 'meow? 什么东西也没有的说呢~') {
-        return self::json(null, NO_LINK_NEEDED, null, $code, $message);
+        return self::json(null, PICKUP_NO_LINK_NEEDED, null, $code, $message);
     }
 
     /**
