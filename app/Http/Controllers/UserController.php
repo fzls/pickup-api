@@ -2,19 +2,11 @@
 
 namespace PickupApi\Http\Controllers;
 
-use Illuminate\Http\Request;
 use PickupApi\Http\RestResponse;
 use PickupApi\Models\User;
 use PickupApi\Utils\TokenUtil;
 
 class UserController extends Controller {
-    public $request;
-
-    public function __construct(Request $request) {
-        $this->request = $request;
-        /* 如果在这里初始化当前的用户，则当无法找到用户时报错时，在terminate阶段容器会重新初始化该类，导致再次触发错误，故现在只在需要当前用户的时候调用它 */
-    }
-
     /**
      * 获取用户们的信息
      * @throws \InvalidArgumentException
@@ -40,12 +32,13 @@ class UserController extends Controller {
         $id   = TokenUtil::getUserInfo()['id'];
         $info = array_merge($this->request->all(), ['id' => $id]);
         $user = User::find($id);
+
         if ($user) {
             /*如果用户已存在*/
             return RestResponse::meta_only(204, '人家早就知道主人様啦~');
-        }else{
-            /*否则新建用户*/
-            return RestResponse::created(User::create($info), '新的小伙伴加入了呢');
+        } else {
+            /*否则新建用户,并且默认未激活，TODO:需要验证浙大邮箱后激活*/
+            return RestResponse::created(User::create($info)->delete(), '新的小伙伴加入了呢，不过别忘了先去找浙大喵激活才能跟我一起玩哦~');
         }
     }
 
@@ -87,14 +80,7 @@ class UserController extends Controller {
 
         $user->update($this->request->all());
 
-        return RestResponse::json($user);
-    }
-
-    /**
-     * 更新当前请求的token所代理的用户的部分信息
-     */
-    public function updatePartialCurrentUserProfile() {
-        return $this->updateCurrentUserProfile();
+        return RestResponse::updated($user);
     }
 
     /**
@@ -104,7 +90,7 @@ class UserController extends Controller {
         $user = TokenUtil::getUser();
         $user->delete();
 
-        return RestResponse::meta_only(204, 'meow，主人被我藏起来了呢~');
+        return RestResponse::deleted('meow，主人被我藏起来了呢~');
     }
 
     public function markAsActivated() {

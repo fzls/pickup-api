@@ -49,7 +49,7 @@ class RestResponse implements Jsonable {
      * @param int                   $code
      * @param string                $message
      *
-     * @return static
+     * @return RestResponse
      */
     public static function json($data = null, $link_callback = null, $pagination = null, $code = 200, $message = '主人，这是你要找的蓝白胖次哟~') {
         /*为数据添加link*/
@@ -63,7 +63,7 @@ class RestResponse implements Jsonable {
 
         /*返回结果*/
 
-        return new static(
+        return new RestResponse(
             new Meta($code, $message),
             $data,
             $pagination
@@ -104,6 +104,15 @@ class RestResponse implements Jsonable {
 
     public static function defaultLinkCallbackForNewItem() {
         return self::defaultLinkCallbackForCollectionItem();
+    }
+
+
+    public static function updated($data,$message = '又变得pikapika了呢', $link_callback=null){
+        return self::json($data, $link_callback, null,200, $message);
+    }
+
+    public static function deleted($message = 'meow meow meow，被我藏起来了呢~'){
+        return self::meta_only(204, $message);
     }
 
 

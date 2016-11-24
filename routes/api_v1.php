@@ -30,10 +30,9 @@ Route::group([/*用户相关接口*/], function () {
     Route::post('/users', 'UserController@addNewUser');
     Route::get('/users/{user}', 'UserController@getUserProfile');
     Route::get('/me', 'UserController@getCurrentUserProfile');
-    Route::put('/me', 'UserController@updateCurrentUserProfile');
-    Route::patch('/me', 'UserController@updatePartialCurrentUserProfile');
-    Route::delete('/me', 'UserController@markAsDeleted');
     Route::post('/me', 'UserController@markAsActivated');
+    Route::put('/me', 'UserController@updateCurrentUserProfile');
+    Route::delete('/me', 'UserController@markAsDeleted');
 });
 
 Route::group([/*常用地点接口*/],function (){

@@ -21,7 +21,19 @@ class FrequentUsedLocationController extends Controller {
      * 增加新的常用地点
      */
     public function addNewFrequentUsedLocation() {
-        /*TODO: 从这里开始啦~QAQ*/
+        $this->validate(
+            $this->request,
+            [
+                'name'      => 'required|string',
+                'latitude'  => 'required|numeric|min:-180|max:180',
+                'longitude' => 'required|numeric|min:-90|max:90',
+            ]
+        );
+
+        $location_info = $this->inputsWithUserId();
+        $location      = FrequentlyUsedLocation::firstOrCreate($location_info);
+
+        return RestResponse::created($location, '又多了一个常去的地方呢~');
     }
 
     /**
@@ -30,9 +42,10 @@ class FrequentUsedLocationController extends Controller {
      * @param FrequentlyUsedLocation $location
      *
      * @internal param $location_id
+     * @return RestResponse
      */
     public function getFrequentUsedLocation(FrequentlyUsedLocation $location) {
-
+        return RestResponse::json($location);
     }
 
     /**
@@ -41,9 +54,12 @@ class FrequentUsedLocationController extends Controller {
      * @param FrequentlyUsedLocation $location
      *
      * @internal param $location_id
+     * @return RestResponse
      */
     public function updateFrequentUsedLocation(FrequentlyUsedLocation $location) {
+        $location->update($this->request->all());
 
+        return RestResponse::updated($location);
     }
 
     /**
@@ -52,8 +68,11 @@ class FrequentUsedLocationController extends Controller {
      * @param FrequentlyUsedLocation $location
      *
      * @internal param $location_id
+     * @return RestResponse
      */
     public function removeFrequentUsedLocation(FrequentlyUsedLocation $location) {
+        $location->delete();
 
+        return RestResponse::deleted();
     }
 }
