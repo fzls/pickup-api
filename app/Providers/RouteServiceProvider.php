@@ -5,8 +5,7 @@ namespace PickupApi\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
-{
+class RouteServiceProvider extends ServiceProvider {
     /**
      * This namespace is applied to your controller routes.
      *
@@ -21,9 +20,17 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        //
+    public function boot() {
+        /*路由参数的一些限制条件*/
+        \Route::pattern('chat', '[0-9]+');
+        \Route::pattern('gift', '[0-9]+');
+        \Route::pattern('history', '[0-9]+');
+        \Route::pattern('location', '[0-9]+');
+        \Route::pattern('notification', '[0-9]+');
+        \Route::pattern('pal', '[0-9]+');
+        \Route::pattern('to', '[0-9]+');
+        \Route::pattern('user', '[0-9]+');
+        \Route::pattern('vehicle', '[0-9]+');
 
         parent::boot();
     }
@@ -33,8 +40,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function map()
-    {
+    public function map() {
         /*TODO: 此处可以用于api分版本注册*/
         $this->mapApiV1Routes();
 
@@ -50,12 +56,11 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapWebRoutes()
-    {
+    protected function mapWebRoutes() {
         Route::group([
-            'middleware' => 'web',
-            'namespace' => $this->namespace,
-        ], function ($router) {
+                         'middleware' => 'web',
+                         'namespace'  => $this->namespace,
+                     ], function ($router) {
             require base_path('routes/web.php');
         });
     }
@@ -67,13 +72,12 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapApiV1Routes()
-    {
+    protected function mapApiV1Routes() {
         Route::group([
-            'middleware' => 'api',
-            'namespace' => $this->namespace,
-            'prefix' => 'api/v1',
-        ], function ($router) {
+                         'middleware' => 'api',
+                         'namespace'  => $this->namespace,
+                         'prefix'     => 'api/v1',
+                     ], function ($router) {
             require base_path('routes/api_v1.php');
         });
     }
