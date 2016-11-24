@@ -85,4 +85,10 @@ class TokenUtil {
         /*否则直接返回用户*/
         return $user;
     }
+
+
+
+    public static function getUserId($with_trashed=false){
+        return self::getUser($with_trashed)->id;
+    }
 }

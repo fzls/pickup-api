@@ -71,15 +71,13 @@ class UserController extends Controller {
         $this->validate(
             $this->request,
             [
-                'id'             => 'numeric|size:' . $user->id,
                 'school_id'      => 'exists:schools,id',
                 'money'          => 'numeric|size:' . $user->money,
                 'checkin_points' => 'numeric|size:' . $user->checkin_points,
                 'charm_points'   => 'numeric|size:' . $user->charm_points,
             ]
         );
-
-        $user->update($this->request->all());
+        $user->update(array_merge($this->request->all(), ['id'=>$user->id]));
 
         return RestResponse::updated($user);
     }

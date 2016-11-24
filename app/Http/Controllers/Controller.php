@@ -22,7 +22,6 @@ class Controller extends BaseController
     }
 
     public function inputsWithUserId(){
-        $user          = TokenUtil::getUser();
-        return array_merge($this->request->all(), ['user_id' => $user->id]);
+        return array_merge($this->request->all(), ['user_id' => TokenUtil::getUserId()]);
     }
 }
