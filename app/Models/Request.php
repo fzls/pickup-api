@@ -18,6 +18,7 @@ class Request extends Model {
 
     protected $fillable
                           = [
+            'user_id',
             'start_name',
             'start_latitude',
             'start_longitude',
@@ -28,14 +29,14 @@ class Request extends Model {
             'activity',
             'phone_number',
             'estimated_cost',
-            'reserved_at'
+            'reserved_at',
         ];
 
     protected $guarded    = [];
 
-    protected $dates = ['reserved_at'];
+    protected $dates      = ['reserved_at'];
 
-    public function user(){
+    public function user() {
         return $this->belongsTo(User::class);
     }
 }
