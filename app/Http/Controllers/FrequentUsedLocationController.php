@@ -3,21 +3,23 @@
 namespace PickupApi\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PickupApi\Http\RestResponse;
 use PickupApi\Models\FrequentlyUsedLocation;
+use PickupApi\TokenUtil;
 
-class FrequentUsedLocationController extends Controller
-{
+class FrequentUsedLocationController extends Controller {
     /**
      * 获取当前用户的常用地点
      */
-    public function getFrequentUsedLocations(){
+    public function getFrequentUsedLocations() {
+        return RestResponse::paginated(TokenUtil::getUser()->frequent_used_locations()->getQuery());
 
     }
 
     /**
      * 增加新的常用地点
      */
-    public function addNewFrequentUsedLocation(){
+    public function addNewFrequentUsedLocation() {
 
     }
 
@@ -28,7 +30,7 @@ class FrequentUsedLocationController extends Controller
      *
      * @internal param $location_id
      */
-    public function getFrequentUsedLocation(FrequentlyUsedLocation $location){
+    public function getFrequentUsedLocation(FrequentlyUsedLocation $location) {
 
     }
 
@@ -39,7 +41,7 @@ class FrequentUsedLocationController extends Controller
      *
      * @internal param $location_id
      */
-    public function updateFrequentUsedLocation(FrequentlyUsedLocation $location){
+    public function updateFrequentUsedLocation(FrequentlyUsedLocation $location) {
 
     }
 
@@ -50,7 +52,7 @@ class FrequentUsedLocationController extends Controller
      *
      * @internal param $location_id
      */
-    public function removeFrequentUsedLocation(FrequentlyUsedLocation $location){
+    public function removeFrequentUsedLocation(FrequentlyUsedLocation $location) {
 
     }
 }

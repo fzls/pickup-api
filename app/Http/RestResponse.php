@@ -8,8 +8,11 @@
 
 namespace PickupApi\Http;
 
+define('NO_LINK_NEEDED', -1);
 
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use PickupApi\Models\User;
 
 class RestResponse implements Jsonable {
@@ -21,6 +24,7 @@ class RestResponse implements Jsonable {
     public $data;
 
     public $pagination;
+
     /**
      * RestResponse constructor.
      *
@@ -28,7 +32,7 @@ class RestResponse implements Jsonable {
      * @param $data
      * @param $pagination
      */
-    public function __construct($meta, $data=null, $pagination=null) {
+    public function __construct($meta, $data = null, $pagination = null) {
         $this->meta       = $meta;
         $this->data       = $data;
         $this->pagination = $pagination;
@@ -39,19 +43,53 @@ class RestResponse implements Jsonable {
     /**
      * 返回通用json结果的辅助函数
      *
-     * @param null   $data
-     * @param null   $pagination
-     * @param int    $code
-     * @param string $message
+     * @param null|Collection|Model $data
+     * @param null|\Closure         $link_callback
+     * @param null|array            $pagination
+     * @param int                   $code
+     * @param string                $message
      *
      * @return static
      */
-    public static function json($data=null, $pagination=null, $code=200, $message='主人，这是你要找的蓝白胖次哟~'){
+    public static function json($data = null, $link_callback = null, $pagination = null, $code = 200, $message = '主人，这是你要找的蓝白胖次哟~') {
+        /*为数据添加link*/
+        /*若是数组或collection，则为每个个体添加link字段*/
+        if (is_array($data) || $data instanceof Collection) {
+            self::addLinks($data, $link_callback);
+        } /*否则若是单个，则直接添加link字段*/
+        elseif ($data instanceof \ArrayAccess) {
+            self::addLink($data, $link_callback);
+        }
+
+        /*返回结果*/
+
         return new static(
             new Meta($code, $message),
             $data,
             $pagination
         );
+    }
+
+    public static function addLink(&$data, $link_callback) {
+        /*若未提供生成个体的link的回调方法，则默认为当前url*/
+        $link_callback = $link_callback
+            ?: function ($data) {
+                return \Request::url();
+            };
+        if ($link_callback !== NO_LINK_NEEDED) {
+            $data['link'] = $link_callback($data);
+        }
+    }
+
+    public static function addLinks(&$data, $link_callback) {
+        /*若未提供生成每个个体的link的回调方法，则默认为当前url+每个实体的id*/
+        $default_callback = function ($data) {
+            return \Request::url() . '/' . $data['id'];
+        };
+
+        foreach ($data as &$item) {
+            self::addLink($item, $link_callback ?: $default_callback);
+        }
     }
 
     /**
@@ -62,8 +100,8 @@ class RestResponse implements Jsonable {
      *
      * @return RestResponse
      */
-    public static function meta_only($code=200, $message='meow? 什么东西也没有的说呢~'){
-        return self::json(null,null,$code,$message);
+    public static function meta_only($code = 200, $message = 'meow? 什么东西也没有的说呢~') {
+        return self::json(null, NO_LINK_NEEDED, null, $code, $message);
     }
 
     /**
@@ -74,8 +112,8 @@ class RestResponse implements Jsonable {
      *
      * @return RestResponse
      */
-    public static function error($code=404, $message='Meow? 主人様要找的东西不见啦~'){
-        return self::meta_only($code,$message);
+    public static function error($code = 404, $message = 'Meow? 主人様要找的东西不见啦~') {
+        return self::meta_only($code, $message);
     }
 
     /**
@@ -86,8 +124,8 @@ class RestResponse implements Jsonable {
      *
      * @return RestResponse
      */
-    public static function exception($code=404, $message='Meow? 主人様要找的东西不见啦~'){
-        return self::error($code,$message);
+    public static function exception($code = 404, $message = 'Meow? 主人様要找的东西不见啦~') {
+        return self::error($code, $message);
     }
 
     /**
@@ -98,7 +136,7 @@ class RestResponse implements Jsonable {
      * @return RestResponse
      * @throws \InvalidArgumentException
      */
-    public static function paginated($query){
+    public static function paginated($query, $link_callback = null) {
         /*TODO: 对于集合类资源，实现下列功能
                 [ ] 选择
                 [ ] 投影
@@ -107,32 +145,34 @@ class RestResponse implements Jsonable {
         */
         /*选择符合条件的集合*/
         $filter = \Request::input('filter');
-        if($filter){
-            self::filter($query,$filter);
+        if ($filter) {
+            self::filter($query, $filter);
         }
 
         /*投影所需的字段*/
         $projection = \Request::input('projection');
-        if($projection){
-            self::projection($query,$projection);
+        if ($projection) {
+            self::projection($query, $projection);
         }
 
         /*对结果进行排序*/
         $sort = \Request::input('sort');
-        if($sort){
-            self::sort($query,$sort);
+        if ($sort) {
+            self::sort($query, $sort);
         }
 
         /*获取每页数目*/
-        $per_page =  \Request::input('per_page') ?: (new User())->getPerPage();
+        $per_page = \Request::input('per_page') ?: (new User())->getPerPage();
         /*获取当前页面的信息，并将系统默认的分页类结果改为数组类型*/
-        $data_with_pagination = $query->paginate($per_page)->appends(compact('filter','projection','per_page','sort'))->toArray();
+        $data_with_pagination = $query->paginate($per_page)->appends(compact('filter', 'projection', 'per_page', 'sort'))->toArray();
         /*将数据与分页情况分离*/
         $data = $data_with_pagination['data'];
         unset($data_with_pagination['data']);
         $pagination = $data_with_pagination;
+
         /*返回分离后的数据*/
-        return self::json($data,$pagination);
+
+        return self::json($data, $link_callback, $pagination);
     }
 
     private static function filter(&$query, $filter) {

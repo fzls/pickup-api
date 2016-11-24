@@ -16,9 +16,10 @@ use PickupApi\TokenUtil;
 */
 /* test only*/
 Route::get('/test', function (Request $request) {
-    $token = Cache::get($request->bearerToken());
-
-    return RestResponse::json(compact('token'));
+    return RestResponse::json($request->url());
+//    $token = Cache::get($request->bearerToken());
+//
+//    return RestResponse::json(compact('token'));
 });
 
 Route::group([/*用户相关接口*/], function () {
