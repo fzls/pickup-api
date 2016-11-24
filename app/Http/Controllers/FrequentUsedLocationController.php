@@ -45,7 +45,7 @@ class FrequentUsedLocationController extends Controller {
      * @return RestResponse
      */
     public function getFrequentUsedLocation(FrequentlyUsedLocation $location) {
-        return RestResponse::json($location);
+        return RestResponse::single($location, 'meow, 这就是主人様常去的地方之一吗？');
     }
 
     /**

@@ -52,14 +52,15 @@ class UserController extends Controller {
      *
      */
     public function getUserProfile(User $user) {
-        return RestResponse::json($user);
+        return RestResponse::single($user, '发现了一个新的主人様了呢');
     }
 
     /**
      * 获取当前请求的token所代理的用户的信息
+     * @throws \PickupApi\Exceptions\UserNotFoundException
      */
     public function getCurrentUserProfile() {
-        return RestResponse::json(TokenUtil::getUser());
+        return RestResponse::single(TokenUtil::getUser(), 'meow, 找到主人様了耶');
     }
 
     /**

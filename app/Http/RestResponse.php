@@ -107,12 +107,16 @@ class RestResponse implements Jsonable {
     }
 
 
-    public static function updated($data,$message = '又变得pikapika了呢', $link_callback=null){
-        return self::json($data, $link_callback, null,200, $message);
+    public static function updated($data, $message = '又变得pikapika了呢', $link_callback = null) {
+        return self::json($data, $link_callback, null, 200, $message);
     }
 
-    public static function deleted($message = 'meow meow meow，被我藏起来了呢~'){
+    public static function deleted($message = 'meow meow meow，被我藏起来了呢~') {
         return self::meta_only(204, $message);
+    }
+
+    public static function single($data, $message = '嘛，很快就找到了主人様要的东西了呢') {
+        return self::json($data, null, null, 200, $message);
     }
 
 
