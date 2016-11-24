@@ -50,10 +50,13 @@ Route::group([/*车辆接口*/], function () {
     Route::get('/vehicles/{vehicle}', 'VehicleController@getVehicleForCurrentUser');
     Route::put('/vehicles/{vehicle}', 'VehicleController@updateVehicleForCurrentUser');
     Route::delete('/vehicles/{vehicle}', 'VehicleController@removeVehicleForCurrentUser');
-    Route::get('/users/{user}/vehicles','VehicleController@getVehiclesOfThatUser');
-    Route::get('/users/{user}/vehicles/{vehicle}','VehicleController@getVehicleOfThatUser');
+    Route::get('/users/{user}/vehicles', 'VehicleController@getVehiclesOfThatUser');
+    Route::get('/users/{user}/vehicles/{vehicle}', 'VehicleController@getVehicleOfThatUser');
 });
 
-Route::group([/*车单接口*/],function (){
-   /**/
+Route::group([/*车单接口*/], function () {
+    Route::get('/requests', 'RequestController@getRequestList');
+    Route::post('/requests', 'RequestController@addNewRequestToList');
+    Route::put('/requests', 'RequestController@driverAcceptRequest');
+    Route::delete('/requests', 'RequestController@passengerCancelRequest');
 });

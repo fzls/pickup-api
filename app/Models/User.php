@@ -212,6 +212,10 @@ class User extends Model {
         );
     }
 
+    public function request(){
+        return $this->hasOne(Request::class);
+    }
+
     // RE: below is not eloquent relations
 
     /**
