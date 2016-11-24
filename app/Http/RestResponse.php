@@ -92,6 +92,13 @@ class RestResponse implements Jsonable {
         }
     }
 
+    public static function created($data, $message = '新的小伙伴加入了呢', $link_callback = null) {
+        $default_callback = function ($data) {
+            return \Request::url() . '/' . $data['id'];
+        };
+        return self::json($data, $link_callback ?: $default_callback, null, 201, $message);
+    }
+
     /**
      * 不需要返回数据时的辅助函数
      *

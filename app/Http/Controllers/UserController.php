@@ -37,9 +37,9 @@ class UserController extends Controller {
                 'charm_points'   => 'numeric|max:0',
             ]
         );
-        User::create($this->request->all());
+        $user = User::create($this->request->all());
 
-        return RestResponse::meta_only(201, '新的小伙伴加入了呢');
+        return RestResponse::created($user, '新的小伙伴加入了呢');
     }
 
     /**
