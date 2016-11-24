@@ -45,7 +45,7 @@ class FrequentUsedLocationController extends Controller {
      * @return RestResponse
      */
     public function getFrequentUsedLocation(FrequentlyUsedLocation $location) {
-        return RestResponse::json($location);
+        return RestResponse::single($location, 'meow, 这就是主人様常去的地方之一吗？');
     }
 
     /**
@@ -57,7 +57,15 @@ class FrequentUsedLocationController extends Controller {
      * @return RestResponse
      */
     public function updateFrequentUsedLocation(FrequentlyUsedLocation $location) {
-        $location->update($this->request->all());
+        $this->validate(
+            $this->request,
+            [
+                'name'      => 'string',
+                'latitude'  => 'numeric|min:-180|max:180',
+                'longitude' => 'numeric|min:-90|max:90',
+            ]
+        );
+        $location->update($this->inputsWithUserId());
 
         return RestResponse::updated($location);
     }

@@ -52,14 +52,15 @@ class UserController extends Controller {
      *
      */
     public function getUserProfile(User $user) {
-        return RestResponse::json($user);
+        return RestResponse::single($user, '发现了一个新的主人様了呢');
     }
 
     /**
      * 获取当前请求的token所代理的用户的信息
+     * @throws \PickupApi\Exceptions\UserNotFoundException
      */
     public function getCurrentUserProfile() {
-        return RestResponse::json(TokenUtil::getUser());
+        return RestResponse::single(TokenUtil::getUser(), 'meow, 找到主人様了耶');
     }
 
     /**
@@ -70,15 +71,13 @@ class UserController extends Controller {
         $this->validate(
             $this->request,
             [
-                'id'             => 'numeric|size:' . $user->id,
                 'school_id'      => 'exists:schools,id',
                 'money'          => 'numeric|size:' . $user->money,
                 'checkin_points' => 'numeric|size:' . $user->checkin_points,
                 'charm_points'   => 'numeric|size:' . $user->charm_points,
             ]
         );
-
-        $user->update($this->request->all());
+        $user->update(array_merge($this->request->all(), ['id'=>$user->id]));
 
         return RestResponse::updated($user);
     }
