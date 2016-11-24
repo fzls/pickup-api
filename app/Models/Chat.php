@@ -22,6 +22,8 @@ class Chat extends Model {
             'recalled_at',
         ];
 
+    protected $dates = ['recalled_at'];
+
     protected $guarded    = [];
 
     /**

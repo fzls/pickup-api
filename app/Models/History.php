@@ -38,6 +38,14 @@ class History extends Model
 
     protected $guarded = [];
 
+    protected $dates = [
+        'started_at',
+        'finished_at',
+        'paid_at',
+        'reserved_at',
+        'canceled_at'
+    ];
+
     /**
      * 本次行程的乘客
      *

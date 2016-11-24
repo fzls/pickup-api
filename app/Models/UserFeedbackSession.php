@@ -27,6 +27,8 @@ class UserFeedbackSession extends Model
 
     protected $guarded = [];
 
+    protected $dates =['finished_at'];
+
     /**
      * 提出反馈的用户
      *

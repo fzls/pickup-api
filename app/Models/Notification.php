@@ -23,6 +23,8 @@ class Notification extends Model
 
     protected $guarded = [];
 
+    protected $dates = ['read_at'];
+
     /**
      * 本通知的目标用户
      *

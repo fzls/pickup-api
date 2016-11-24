@@ -32,4 +32,6 @@ class Request extends Model {
         ];
 
     protected $guarded    = [];
+
+    protected $dates = ['reserved_at'];
 }
