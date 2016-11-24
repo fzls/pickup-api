@@ -70,34 +70,42 @@ class RestResponse implements Jsonable {
         );
     }
 
+    /*TODO: 添加新建的方法的注释*/
     public static function addLink(&$data, $link_callback) {
         /*若未提供生成个体的link的回调方法，则默认为当前url*/
-        $link_callback = $link_callback
-            ?: function ($data) {
-                return \Request::url();
-            };
+        $link_callback = $link_callback ?: self::defaultLinkCallbackForSingleItem();
+
         if ($link_callback !== NO_LINK_NEEDED) {
             $data['link'] = $link_callback($data);
         }
     }
 
     public static function addLinks(&$data, $link_callback) {
-        /*若未提供生成每个个体的link的回调方法，则默认为当前url+每个实体的id*/
-        $default_callback = function ($data) {
-            return \Request::url() . '/' . $data['id'];
-        };
-
         foreach ($data as &$item) {
-            self::addLink($item, $link_callback ?: $default_callback);
+            self::addLink($item, $link_callback ?: self::defaultLinkCallbackForCollectionItem());
         }
     }
 
     public static function created($data, $message = '新的小伙伴加入了呢', $link_callback = null) {
-        $default_callback = function ($data) {
+        return self::json($data, $link_callback ?: self::defaultLinkCallbackForNewItem(), null, 201, $message);
+    }
+
+    public static function defaultLinkCallbackForCollectionItem() {
+        return function ($data) {
             return \Request::url() . '/' . $data['id'];
         };
-        return self::json($data, $link_callback ?: $default_callback, null, 201, $message);
     }
+
+    public static function defaultLinkCallbackForSingleItem() {
+        return function ($data) {
+            return \Request::url();
+        };
+    }
+
+    public static function defaultLinkCallbackForNewItem() {
+        return self::defaultLinkCallbackForCollectionItem();
+    }
+
 
     /**
      * 不需要返回数据时的辅助函数

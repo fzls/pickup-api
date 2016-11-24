@@ -5,7 +5,7 @@ namespace PickupApi\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use PickupApi\TokenUtil;
+use PickupApi\Utils\TokenUtil;
 
 /**
  * Class User

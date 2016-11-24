@@ -5,11 +5,12 @@ namespace PickupApi\Http\Controllers;
 use Illuminate\Http\Request;
 use PickupApi\Http\RestResponse;
 use PickupApi\Models\FrequentlyUsedLocation;
-use PickupApi\TokenUtil;
+use PickupApi\Utils\TokenUtil;
 
 class FrequentUsedLocationController extends Controller {
     /**
      * 获取当前用户的常用地点
+     * @throws \InvalidArgumentException
      */
     public function getFrequentUsedLocations() {
         return RestResponse::paginated(TokenUtil::getUser()->frequent_used_locations()->getQuery());

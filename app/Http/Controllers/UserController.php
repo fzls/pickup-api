@@ -5,7 +5,7 @@ namespace PickupApi\Http\Controllers;
 use Illuminate\Http\Request;
 use PickupApi\Http\RestResponse;
 use PickupApi\Models\User;
-use PickupApi\TokenUtil;
+use PickupApi\Utils\TokenUtil;
 
 class UserController extends Controller {
     public $request;
