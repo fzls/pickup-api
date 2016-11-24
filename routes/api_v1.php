@@ -18,10 +18,11 @@ use PickupApi\TokenUtil;
 Route::get('/test', function (Request $request) {
 //    return RestResponse::json(\PickupApi\Utils\UrlUtil::getAllSupportedMethods(),NO_LINK_NEEDED);
     $token = Cache::get($request->bearerToken());
+
     return RestResponse::json($token, PICKUP_NO_LINK_NEEDED);
 });
 
-Route::post('/test',function (\Request $request){
+Route::post('/test', function (\Request $request) {
     return RestResponse::json('post');
 });
 
@@ -35,10 +36,20 @@ Route::group([/*用户相关接口*/], function () {
     Route::delete('/me', 'UserController@markAsDeleted');
 });
 
-Route::group([/*常用地点接口*/],function (){
-    Route::get('/frequent_used_locations','FrequentUsedLocationController@getFrequentUsedLocations');
-    Route::post('/frequent_used_locations','FrequentUsedLocationController@addNewFrequentUsedLocation');
-    Route::get('/frequent_used_locations/{location}','FrequentUsedLocationController@getFrequentUsedLocation');
-    Route::put('/frequent_used_locations/{location}','FrequentUsedLocationController@updateFrequentUsedLocation');
-    Route::delete('/frequent_used_locations/{location}','FrequentUsedLocationController@removeFrequentUsedLocation');
+Route::group([/*常用地点接口*/], function () {
+    Route::get('/frequent_used_locations', 'FrequentUsedLocationController@getFrequentUsedLocations');
+    Route::post('/frequent_used_locations', 'FrequentUsedLocationController@addNewFrequentUsedLocation');
+    Route::get('/frequent_used_locations/{location}', 'FrequentUsedLocationController@getFrequentUsedLocation');
+    Route::put('/frequent_used_locations/{location}', 'FrequentUsedLocationController@updateFrequentUsedLocation');
+    Route::delete('/frequent_used_locations/{location}', 'FrequentUsedLocationController@removeFrequentUsedLocation');
+});
+
+Route::group([/*车辆接口*/], function () {
+    Route::get('/vehicles', 'VehicleController@getVehiclesForCurrentUser');
+    Route::post('/vehicles', 'VehicleController@addNewVehicleForCurrentUser');
+    Route::get('/vehicles/{vehicle}', 'VehicleController@getVehicleForCurrentUser');
+    Route::put('/vehicles/{vehicle}', 'VehicleController@updateVehicleForCurrentUser');
+    Route::delete('/vehicles/{vehicle}', 'VehicleController@removeVehicleForCurrentUser');
+    Route::get('/users/{user}/vehicles','VehicleController@getVehiclesOfThatUser');
+    Route::get('/users/{user}/vehicles/{vehicle}','VehicleController@getVehicleOfThatUser');
 });
