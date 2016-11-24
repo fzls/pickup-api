@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use PickupApi\Http\RestResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler {
     /**
@@ -53,6 +54,8 @@ class Handler extends ExceptionHandler {
             return response()->json(RestResponse::error(422, ['validation_errors' => $exception->validator->getMessageBag()]));
         }elseif ($exception instanceof ModelNotFoundException){
             return response()->json(RestResponse::error(404, $exception->getMessage()));
+        }elseif ($exception instanceof NotFoundHttpException){
+            return response()->json(RestResponse::exception());
         }
 
         /*return json only*/

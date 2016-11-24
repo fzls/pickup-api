@@ -9,7 +9,7 @@
 namespace PickupApi\Exceptions;
 
 
-class UserNotFountException extends PickupApiException {
+class UserNotFoundException extends PickupApiException {
     public function __construct($code = 404, $message = null) {
         $default_message = '大哥哥我不认识你欸，试试 post ' . \Request::getHttpHost() . '/users，让我知道你是谁哦~';
 

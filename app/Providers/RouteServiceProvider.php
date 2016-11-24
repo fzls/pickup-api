@@ -35,7 +35,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $this->mapApiRoutes();
+        /*TODO: 此处可以用于api分版本注册*/
+        $this->mapApiV1Routes();
 
         $this->mapWebRoutes();
 
@@ -66,14 +67,14 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function mapApiRoutes()
+    protected function mapApiV1Routes()
     {
         Route::group([
             'middleware' => 'api',
             'namespace' => $this->namespace,
-            'prefix' => 'api',
+            'prefix' => 'api/v1',
         ], function ($router) {
-            require base_path('routes/api.php');
+            require base_path('routes/api_v1.php');
         });
     }
 }

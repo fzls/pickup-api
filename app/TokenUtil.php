@@ -10,7 +10,7 @@ namespace PickupApi;
 
 
 use PickupApi\Exceptions\InvalidApiTokenException;
-use PickupApi\Exceptions\UserNotFountException;
+use PickupApi\Exceptions\UserNotFoundException;
 use PickupApi\Http\Meta;
 use PickupApi\Http\RestResponse;
 use PickupApi\Models\User;
@@ -67,7 +67,7 @@ class TokenUtil {
      * ps：同一个用户在两处的id是相同的，其中应用服务器的id从属于认证服务器的id
      *
      * @return User
-     * @throws \PickupApi\Exceptions\UserNotFountException
+     * @throws \PickupApi\Exceptions\UserNotFoundException
      */
     public static function getUser($with_trashed=false){
         /*试图在应用服务器中查询该用户的信息*/
@@ -76,11 +76,11 @@ class TokenUtil {
         /*若未找到该用户，则返回错误，提示用户在本系统内创建账户（即添加应用必要的信息，如学校等）*/
         if(is_null($user)){
             /*TODO: 返回一个可以注册相应信息的url, throw exception UserNotFountException*/
-            throw new UserNotFountException();
+            throw new UserNotFoundException();
         }
         /*若用户账户已被注销，则返回相应的提示*/
         if($user->trashed() &&  !$with_trashed){
-            throw new UserNotFountException(404, '主人很久以前已经抛弃人家了，真的不要人家了嘛？ 到 post '.\Request::getHttpHost().'/me 就可以继续跟我玩啦');
+            throw new UserNotFoundException(404, '主人很久以前已经抛弃人家了，真的不要人家了嘛？ 到 post '.\Request::getHttpHost().'/me 就可以继续跟我玩啦');
         }
         /*否则直接返回用户*/
         return $user;
