@@ -45,13 +45,14 @@ class UserController extends Controller {
     /**
      * 获取该id对应用户的信息
      *
-     * @param $user_id
+     * @param User $user
      *
      * @return RestResponse
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @internal param $user_id
+     *
      */
-    public function getUserProfile($user_id) {
-        return RestResponse::json(User::findOrFail($user_id));
+    public function getUserProfile(User $user) {
+        return RestResponse::json($user);
     }
 
     /**

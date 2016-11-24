@@ -24,7 +24,7 @@ Route::get('/test', function (Request $request) {
 Route::group([/*用户相关接口*/], function () {
     Route::get('/users', 'UserController@getUsersProfile');
     Route::post('/users', 'UserController@addNewUser');
-    Route::get('/users/{user_id}', 'UserController@getUserProfile');
+    Route::get('/users/{user}', 'UserController@getUserProfile');
     Route::get('/me', 'UserController@getCurrentUserProfile');
     Route::put('/me', 'UserController@updateCurrentUserProfile');
     Route::patch('/me', 'UserController@updatePartialCurrentUserProfile');
@@ -33,5 +33,9 @@ Route::group([/*用户相关接口*/], function () {
 });
 
 Route::group([/*常用地点接口*/],function (){
-
+    Route::get('/frequent_used_locations','FrequentUsedLocationController@getFrequentUsedLocations');
+    Route::post('/frequent_used_locations','FrequentUsedLocationController@addNewFrequentUsedLocation');
+    Route::get('/frequent_used_locations/{location}','FrequentUsedLocationController@getFrequentUsedLocation');
+    Route::put('/frequent_used_locations/{location}','FrequentUsedLocationController@updateFrequentUsedLocation');
+    Route::delete('/frequent_used_locations/{location}','FrequentUsedLocationController@removeFrequentUsedLocation');
 });
