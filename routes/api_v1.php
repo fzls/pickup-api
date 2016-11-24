@@ -16,22 +16,29 @@ use PickupApi\TokenUtil;
 */
 /* test only*/
 Route::get('/test', function (Request $request) {
+//    return RestResponse::json(\PickupApi\Utils\UrlUtil::getAllSupportedMethods(),NO_LINK_NEEDED);
     $token = Cache::get($request->bearerToken());
+    return RestResponse::json($token, PICKUP_NO_LINK_NEEDED);
+});
 
-    return RestResponse::json(compact('token'));
+Route::post('/test',function (\Request $request){
+    return RestResponse::json('post');
 });
 
 Route::group([/*用户相关接口*/], function () {
     Route::get('/users', 'UserController@getUsersProfile');
     Route::post('/users', 'UserController@addNewUser');
-    Route::get('/users/{user_id}', 'UserController@getUserProfile');
+    Route::get('/users/{user}', 'UserController@getUserProfile');
     Route::get('/me', 'UserController@getCurrentUserProfile');
-    Route::put('/me', 'UserController@updateCurrentUserProfile');
-    Route::patch('/me', 'UserController@updatePartialCurrentUserProfile');
-    Route::delete('/me', 'UserController@markAsDeleted');
     Route::post('/me', 'UserController@markAsActivated');
+    Route::put('/me', 'UserController@updateCurrentUserProfile');
+    Route::delete('/me', 'UserController@markAsDeleted');
 });
 
 Route::group([/*常用地点接口*/],function (){
-
+    Route::get('/frequent_used_locations','FrequentUsedLocationController@getFrequentUsedLocations');
+    Route::post('/frequent_used_locations','FrequentUsedLocationController@addNewFrequentUsedLocation');
+    Route::get('/frequent_used_locations/{location}','FrequentUsedLocationController@getFrequentUsedLocation');
+    Route::put('/frequent_used_locations/{location}','FrequentUsedLocationController@updateFrequentUsedLocation');
+    Route::delete('/frequent_used_locations/{location}','FrequentUsedLocationController@removeFrequentUsedLocation');
 });

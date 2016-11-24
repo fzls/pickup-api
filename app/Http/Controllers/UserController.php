@@ -2,19 +2,11 @@
 
 namespace PickupApi\Http\Controllers;
 
-use Illuminate\Http\Request;
 use PickupApi\Http\RestResponse;
 use PickupApi\Models\User;
-use PickupApi\TokenUtil;
+use PickupApi\Utils\TokenUtil;
 
 class UserController extends Controller {
-    public $request;
-
-    public function __construct(Request $request) {
-        $this->request = $request;
-        /* 如果在这里初始化当前的用户，则当无法找到用户时报错时，在terminate阶段容器会重新初始化该类，导致再次触发错误，故现在只在需要当前用户的时候调用它 */
-    }
-
     /**
      * 获取用户们的信息
      * @throws \InvalidArgumentException
@@ -24,34 +16,43 @@ class UserController extends Controller {
     }
 
     /**
-     * 添加一个新的用户
+     * 添加一个新的用户, 即当前token所对应的用户，用于初始化应用相关信息
      */
     public function addNewUser() {
         $this->validate(
             $this->request,
             [
-                'id'             => 'required|unique:users,id',
                 'school_id'      => 'required|exists:schools,id',
                 'money'          => 'numeric|max:0',
                 'checkin_points' => 'numeric|max:0',
                 'charm_points'   => 'numeric|max:0',
             ]
         );
-        User::create($this->request->all());
 
-        return RestResponse::meta_only(201, '新的小伙伴加入了呢');
+        $id   = TokenUtil::getUserInfo()['id'];
+        $info = array_merge($this->request->all(), ['id' => $id]);
+        $user = User::find($id);
+
+        if ($user) {
+            /*如果用户已存在*/
+            return RestResponse::meta_only(204, '人家早就知道主人様啦~');
+        } else {
+            /*否则新建用户,并且默认未激活，TODO:需要验证浙大邮箱后激活*/
+            return RestResponse::created(User::create($info)->delete(), '新的小伙伴加入了呢，不过别忘了先去找浙大喵激活才能跟我一起玩哦~');
+        }
     }
 
     /**
      * 获取该id对应用户的信息
      *
-     * @param $user_id
+     * @param User $user
      *
      * @return RestResponse
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @internal param $user_id
+     *
      */
-    public function getUserProfile($user_id) {
-        return RestResponse::json(User::findOrFail($user_id));
+    public function getUserProfile(User $user) {
+        return RestResponse::json($user);
     }
 
     /**
@@ -79,14 +80,7 @@ class UserController extends Controller {
 
         $user->update($this->request->all());
 
-        return RestResponse::json($user);
-    }
-
-    /**
-     * 更新当前请求的token所代理的用户的部分信息
-     */
-    public function updatePartialCurrentUserProfile() {
-        return $this->updateCurrentUserProfile();
+        return RestResponse::updated($user);
     }
 
     /**
@@ -96,10 +90,10 @@ class UserController extends Controller {
         $user = TokenUtil::getUser();
         $user->delete();
 
-        return RestResponse::meta_only(204,'meow，主人被我藏起来了呢~');
+        return RestResponse::deleted('meow，主人被我藏起来了呢~');
     }
 
-    public function markAsActivated(){
+    public function markAsActivated() {
         $user = TokenUtil::getUser(true);
         $user->restore();
 

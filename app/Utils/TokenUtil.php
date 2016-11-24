@@ -6,7 +6,7 @@
  * Time: 15:21
  */
 
-namespace PickupApi;
+namespace PickupApi\Utils;
 
 
 use PickupApi\Exceptions\InvalidApiTokenException;
