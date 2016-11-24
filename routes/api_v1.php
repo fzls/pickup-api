@@ -53,3 +53,7 @@ Route::group([/*车辆接口*/], function () {
     Route::get('/users/{user}/vehicles','VehicleController@getVehiclesOfThatUser');
     Route::get('/users/{user}/vehicles/{vehicle}','VehicleController@getVehicleOfThatUser');
 });
+
+Route::group([/*车单接口*/],function (){
+   /**/
+});
