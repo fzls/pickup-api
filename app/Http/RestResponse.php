@@ -51,7 +51,7 @@ class RestResponse implements Jsonable {
      *
      * @return RestResponse
      */
-    public static function json($data = null, $link_callback = null, $pagination = null, $code = 200, $message = '主人，这是你要找的蓝白胖次哟~') {
+    public static function json($data = null, $link_callback = PICKUP_NO_LINK_NEEDED, $pagination = null, $code = 200, $message = '主人，这是你要找的蓝白胖次哟~') {
         /*为数据添加link*/
         /*若是数组或collection，则为每个个体添加link字段*/
         if (is_array($data) || $data instanceof Collection) {

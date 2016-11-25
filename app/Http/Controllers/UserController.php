@@ -96,6 +96,6 @@ class UserController extends Controller {
         $user = TokenUtil::getUser(true);
         $user->restore();
 
-        return RestResponse::json($user);
+        return RestResponse::single($user);
     }
 }

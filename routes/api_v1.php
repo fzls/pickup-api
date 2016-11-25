@@ -71,7 +71,6 @@ Route::group([/*历史行程相关接口*/], function () {
     Route::post('/history/{history}/snapshots', 'HistoryController@addNewSnapshot');
 });
 
-/*RE: 从这里开始哟~*/
 Route::group([/*当前位置接口*/], function () {
     Route::get('/users/{user}/current_location', 'CurrentLocationController@getCurrentLocationOf');
     Route::get('current_location', 'CurrentLocationController@getCurrentLocation');
@@ -81,11 +80,12 @@ Route::group([/*当前位置接口*/], function () {
 
 Route::group([/*余额相关接口*/], function () {
     Route::get('/money', 'MoneyController@getRemainingMoney');
-    Route::post('/money', 'MoneyController@recharge');
-    Route::delete('/money', 'MoneyController@withdraw');
-    Route::post('/transfer/{to}', 'MoneyController@transfer');
+    Route::post('/money/{recharge_amount}', 'MoneyController@recharge');
+    Route::delete('/money/{withdraw_amount}', 'MoneyController@withdraw');
+    Route::post('/transfer/{to}/{amount}', 'MoneyController@transfer');
 });
 
+/*RE: 从这里开始哟~*/
 Route::group([/*订单相关接口*/], function () {
     Route::get('/orders/recharges', 'OrderController@getRechargeOrders');
     Route::get('/orders/withdraws', 'OrderController@getWithdrawOrders');

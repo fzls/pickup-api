@@ -31,6 +31,9 @@ class RouteServiceProvider extends ServiceProvider {
         \Route::pattern('to', '[0-9]+');
         \Route::pattern('user', '[0-9]+');
         \Route::pattern('vehicle', '[0-9]+');
+        \Route::pattern('recharge_amount', '[0-9]+');
+        \Route::pattern('withdraw_amount', '[0-9]+');
+        \Route::pattern('amount', '[0-9\.]+');
 
         parent::boot();
     }
