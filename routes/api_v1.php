@@ -61,57 +61,55 @@ Route::group([/*车单接口*/], function () {
     Route::delete('/requests', 'RequestController@passengerCancelRequest');
 });
 
-/*Hack: 从这里开始*/
-Route::group([/*历史行程接口*/],function (){
-    Route::get('/history','');
-    Route::post('/history','');
-    Route::get('/history/{history}','');
-    Route::delete('/history/{history}','');
+/*RE: 从这里开始哟~*/
+Route::group([/*历史行程相关接口*/], function () {
+    Route::get('/history', 'HistoryController@getAllHistory');
+    Route::post('/history', 'HistoryController@startNewHistory');
+    Route::get('/history/{history}', 'HistoryController@getHistory');
+    Route::delete('/history/{history}', 'HistoryController@finishHistory');
+    Route::get('/history/{history}/history_snapshots', 'HistoryController@getSnapshots');
+    Route::post('/history/{history}/history_snapshots', 'HistoryController@addNewSnapshot');
 });
 
-Route::group([/*历史行程快照接口*/], function (){
-    Route::get('/history_snapshots', '');
-    Route::post('/history_snapshots','');
+
+Route::group([/*当前位置接口*/], function () {
+    Route::get('/users/{user}/current_location', 'CurrentLocationController@getCurrentLocation');
+    Route::post('/users/{user}/current_location', 'CurrentLocationController@updateCurrentLocation');
+    Route::delete('/users/{user}/current_location', 'CurrentLocationController@removeCurrentLocation');
 });
 
-Route::group([/*当前位置接口*/], function (){
-    Route::get('/current_location', '');
-    Route::post('/current_location', '');
-    Route::delete('/current_location', '');
+Route::group([/*余额相关接口*/], function () {
+    Route::get('/money', 'MoneyController@getRemainingMoney');
+    Route::post('/money', 'MoneyController@recharge');
+    Route::delete('/money', 'MoneyController@withdraw');
+    Route::post('/transfer/{to}', 'MoneyController@transfer');
 });
 
-Route::group([/*余额相关接口*/], function (){
-    Route::get('/money', '');
-    Route::post('/money', '');
-    Route::delete('/money', '');
-    Route::post('/transfer/{to}', '');
+Route::group([/*订单相关接口*/], function () {
+    Route::get('/orders/recharges', 'OrderController@getRechargeOrders');
+    Route::get('/orders/withdraws', 'OrderController@getWithdrawOrders');
+    Route::get('/orders/payments', 'OrderController@getPaymentOrders');
+    Route::get('/orders/revenues', 'OrderController@getRevenueOrders');
 });
 
-Route::group([/*订单相关接口*/], function (){
-    Route::get('/orders/recharges', '');
-    Route::get('/orders/withdraws', '');
-    Route::get('/orders/payments', '');
-    Route::get('/orders/revenues', '');
-});
-
-Route::group([/*礼物相关接口*/], function (){
-    Route::get('/gift-categories', '');
-    Route::post('/gift-categories', '');
-    Route::get('/gift-categories/{gift}', '');
-    Route::put('/gift-categories/{gift}', '');
-    Route::delete('/gift-categories/{gift}', '');
-    Route::get('/gifts', '');
-    Route::post('/gifts', '');
+Route::group([/*礼物相关接口*/], function () {
+    Route::get('/gift-categories', 'GiftController@getGiftCategories');
+    Route::post('/gift-categories', 'GiftController@addGiftCategory');
+    Route::get('/gift-categories/{gift}', 'GiftController@getGiftCategory');
+    Route::put('/gift-categories/{gift}', 'GiftController@updateGiftCategory');
+    Route::delete('/gift-categories/{gift}', 'GiftController@removeGiftCategory');
+    Route::get('/gifts', 'GiftController@getGifts');
+//    Route::post('/gifts', '');
 });
 
 Route::group([/*评价与投诉接口*/], function (){
-    Route::post('/rater/{to}', '');
-    Route::post('/tousu/{to}', '');
+    Route::post('/rater/{to}', 'ReviewAndTousuController@rate');
+    Route::post('/tousu/{to}', 'ReviewAndTousuController@tousu');
 });
 
 Route::group([/*排行榜相关接口*/], function (){
-    Route::get('/rankings', '');
-    Route::get('/rankings/{type}', '');
+    Route::get('/rankings', 'RankingController@getAllRankings');
+    Route::get('/rankings/{type}', 'RankingController@getRankingOfType');
     /*获取某一种类型的排行榜{highest_rated_drivers, most_attractive_drivers, most_rated_passengers}
     对象类别分三个，highest_rated_driver_rankings, most_attractive_driver_rankings, most_rated_passenger_rankings，
     时间段类别分过去一天，一周，一月，以及总排行，通过选择时间周期调整，默认显示一周的结果
@@ -119,38 +117,38 @@ Route::group([/*排行榜相关接口*/], function (){
 });
 
 Route::group([/*聊天接口*/], function (){
-    Route::get('/chats', '');
-    Route::get('/chats/{pal}', '');
-    Route::post('/chats/{pal}', '');
-    Route::delete('/chats/{pal}', '');
-    Route::get('/chats/{pal}/{chat}', '');
-    Route::put('/chats/{pal}/{chat}', '');
-    Route::delete('/chats/{pal}/{chat}', '');
+    Route::get('/chats', 'ChatController@getChats');
+    Route::get('/chats/{pal}', 'ChatController@getChatsWith');
+    Route::post('/chats/{pal}', 'ChatController@newChatWith');
+    Route::delete('/chats/{pal}', 'ChatController@deleteChatsWith');
+    Route::get('/chats/{pal}/{chat}', 'ChatController@getChatWith');
+    Route::put('/chats/{pal}/{chat}', 'ChatController@recallChatWith');
+    Route::delete('/chats/{pal}/{chat}', 'ChatController@deleteChatWith');
 });
 
 Route::group([/*通知相关接口*/],function (){
-    Route::get('/notifications', '');
-    Route::post('/notifications', '');
-    Route::put('/notifications', '');
-    Route::get('/notifications/read', '');
-    Route::get('/notifications/unread', '');
-    Route::get('/notifications/{notification}', '');
-    Route::put('/notifications/{notification}', '');
-    Route::delete('/notifications/{notification}', '');
+    Route::get('/notifications', 'NotificationController@getNotifications');
+    Route::post('/notifications', 'NotificationController@newNotification');
+    Route::put('/notifications', 'NotificationController@markAllNotificationsAsRead');
+    Route::get('/notifications/read', 'NotificationController@getAllReadNotifications');
+    Route::get('/notifications/unread', 'NotificationController@getAllUnreadNotifications');
+    Route::get('/notifications/{notification}', 'NotificationController@getNotification');
+    Route::put('/notifications/{notification}', 'NotificationController@markAsRead');
+    Route::delete('/notifications/{notification}', 'NotificationController@deleteNotification');
 });
 
 Route::group([/*签到相关接口*/], function (){
-    Route::get('/checkin', '');
-    Route::post('/checkin', '');
+    Route::get('/checkin', 'CheckinController@checkIfCheckedIn');
+    Route::post('/checkin', 'CheckinController@checkin');
 });
 
 Route::group([/*搜索相关接口*/], function (){
-    Route::get('/search', '');
+    Route::get('/search', 'SearchController@search');
 });
 
 Route::group([/*其他接口*/],function (){
-    Route::get('/about', '');
-    Route::get('/help', '');
-    Route::get('/contact', '');
-    Route::get('/version', '');
+    Route::get('/about', 'MiscellaneousController@about');
+    Route::get('/help', 'MiscellaneousController@help');
+    Route::get('/contact', 'MiscellaneousController@contact');
+    Route::get('/version', 'MiscellaneousController@version');
 });
