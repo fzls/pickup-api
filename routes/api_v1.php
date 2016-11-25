@@ -73,9 +73,10 @@ Route::group([/*历史行程相关接口*/], function () {
 
 /*RE: 从这里开始哟~*/
 Route::group([/*当前位置接口*/], function () {
-    Route::get('/users/{user}/current_location', 'CurrentLocationController@getCurrentLocation');
-    Route::post('/users/{user}/current_location', 'CurrentLocationController@updateCurrentLocation');
-    Route::delete('/users/{user}/current_location', 'CurrentLocationController@removeCurrentLocation');
+    Route::get('/users/{user}/current_location', 'CurrentLocationController@getCurrentLocationOf');
+    Route::get('current_location', 'CurrentLocationController@getCurrentLocation');
+    Route::post('current_location', 'CurrentLocationController@updateCurrentLocation');
+    Route::delete('current_location', 'CurrentLocationController@removeCurrentLocation');
 });
 
 Route::group([/*余额相关接口*/], function () {

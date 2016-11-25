@@ -119,6 +119,10 @@ class RestResponse implements Jsonable {
         return self::json($data, null, null, 200, $message);
     }
 
+    public static function single_without_link($data, $message = '嘛，很快就找到了主人様要的东西了呢') {
+        return self::json($data, PICKUP_NO_LINK_NEEDED, null, 200, $message);
+    }
+
 
     /**
      * 不需要返回数据时的辅助函数
