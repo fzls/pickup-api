@@ -61,17 +61,17 @@ Route::group([/*车单接口*/], function () {
     Route::delete('/requests', 'RequestController@passengerCancelRequest');
 });
 
-/*RE: 从这里开始哟~*/
 Route::group([/*历史行程相关接口*/], function () {
     Route::get('/history', 'HistoryController@getAllHistory');
-    Route::post('/history', 'HistoryController@startNewHistory');
     Route::get('/history/{history}', 'HistoryController@getHistory');
     Route::delete('/history/{history}', 'HistoryController@finishHistory');
-    Route::get('/history/{history}/history_snapshots', 'HistoryController@getSnapshots');
-    Route::post('/history/{history}/history_snapshots', 'HistoryController@addNewSnapshot');
+    Route::get('/drive_history', 'HistoryController@getAllDriveHistory');
+    Route::get('/drive_history/{history}', 'HistoryController@getDriveHistory');
+    Route::get('/history/{history}/snapshots', 'HistoryController@getSnapshots');
+    Route::post('/history/{history}/snapshots', 'HistoryController@addNewSnapshot');
 });
 
-
+/*RE: 从这里开始哟~*/
 Route::group([/*当前位置接口*/], function () {
     Route::get('/users/{user}/current_location', 'CurrentLocationController@getCurrentLocation');
     Route::post('/users/{user}/current_location', 'CurrentLocationController@updateCurrentLocation');
