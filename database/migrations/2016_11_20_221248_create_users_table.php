@@ -13,6 +13,14 @@ class CreateUsersTable extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->unsignedInteger('id')
                   ->comment('继承自认证服务器(当利用token去服务器取回有效用户，发现该用户在本地不存在，则在本地创建该用户,并且将公共信息加入缓存中user_id->common_info)');
+            $table->string('username')
+                  ->comment('继承自认证服务器(用户名)');
+            $table->string('email')
+                  ->comment('继承自认证服务器(用户邮箱)');
+            $table->string('phone')
+                  ->comment('继承自认证服务器(用户手机号码)');
+            $table->string('avatar', config('app.max_url_length'))
+                  ->comment('继承自认证服务器(用户头像地址)');
             $table->unsignedInteger('school_id')
                   ->comment('学校id');
             $table->text('description')->nullable()

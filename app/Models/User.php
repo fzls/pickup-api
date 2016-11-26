@@ -22,6 +22,10 @@ class User extends Model {
     protected $fillable
                           = [
             'id',
+            'username',
+            'email',
+            'phone',
+            'avatar',
             'school_id',
             'description',
             'money',
@@ -212,7 +216,7 @@ class User extends Model {
         );
     }
 
-    public function request(){
+    public function request() {
         return $this->hasOne(Request::class);
     }
 

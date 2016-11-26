@@ -88,13 +88,26 @@ class DatabaseSeeder extends Seeder {
             ]
         );
         /*为了测试需要，若不存在id为1的用户，则添加该用户*/
-        if (! User::whereId(1)->exists()) {
+        if ($user = User::find(1)) {
+            /*若存在，则更新属性*/
+            $user->update(
+                [
+                    'username'  => 'Rem',
+                    'email'     => 'Rem@gmail.com',
+                    'phone'     => '15700072333',
+                ]
+            );
+        }else{
+            /*若不存在*/
             $users [] = factory(User::class)->create(
                 [
                     'id'        => 1,
                     'school_id' => function () use ($schools) {
                         return $schools->random()->id;
                     },
+                    'username'  => 'Rem',
+                    'email'     => 'Rem@gmail.com',
+                    'phone'     => '15700072333',
                 ]
             );
         }
@@ -174,11 +187,11 @@ class DatabaseSeeder extends Seeder {
             $h->gift_bundles()->saveMany(factory(GiftBundle::class, $cnt_gift_bundle_per_history)->make(
                 [
 
-                    'gift_id' => function () use ($gift_categories) {
+                    'gift_id'      => function () use ($gift_categories) {
                         return $gift_categories->random()->id;
                     },
-                    'passenger_id'=>$h->passenger_id,
-                    'driver_id'=>$h->driver_id,
+                    'passenger_id' => $h->passenger_id,
+                    'driver_id'    => $h->driver_id,
                 ]
             ));
             /*并为这些行程分别依概率创建双向的评价与评论*/
@@ -207,7 +220,7 @@ class DatabaseSeeder extends Seeder {
 //                                             },
 //                                         ]);
         $t_end = \Carbon\Carbon::now();
-        echo "initialize database use ".$t_end->diffForHumans($t_start);
+        echo "initialize database use " . $t_end->diffForHumans($t_start);
 
     }
 }

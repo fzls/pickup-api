@@ -29,9 +29,10 @@ class UserController extends Controller {
             ]
         );
 
-        $id   = TokenUtil::getUserInfo()['id'];
-        $info = array_merge($this->request->all(), ['id' => $id]);
-        $user = User::find($id);
+        $user_info_from_oauth_server = collect(TokenUtil::getUserInfo())
+            ->only(['id', 'username', 'email', 'phone', 'avatar']);
+        $info                        = array_merge($this->request->all(), $user_info_from_oauth_server);
+        $user                        = User::find($id);
 
         if ($user) {
             /*如果用户已存在*/
@@ -77,7 +78,7 @@ class UserController extends Controller {
                 'charm_points'   => 'numeric|size:' . $user->charm_points,
             ]
         );
-        $user->update(array_merge($this->request->all(), ['id'=>$user->id]));
+        $user->update(array_merge($this->request->all(), ['id' => $user->id]));
 
         return RestResponse::updated($user);
     }
