@@ -26,7 +26,7 @@ class CreateUserFeedbackSessionsTable extends Migration
                 ->comment('处理于，由客服人员触发');
             $table->timestamp('finished_at')->nullable()
                 ->comment('完成于，由用户触发');
-            $table->integer('rating')
+            $table->integer('rating')->nullable()
                 ->comment('用户对本次服务的评价');
             $table->timestamps();
 

@@ -106,12 +106,13 @@ Route::group([/*礼物相关接口*/], function () {
     Route::get('/gifts/{gift}', 'GiftController@getGift');
 });
 
-/*RE: 从这里开始哟~*/
 Route::group([/*评价与投诉接口*/], function (){
     Route::post('/rater', 'ReviewAndTousuController@rate');
-    Route::post('/tousu', 'ReviewAndTousuController@tousu');
+    Route::post('/feedback_sessions', 'ReviewAndTousuController@AddFeedbackSession');
+    /*TODO：获取反馈与评论的接口*/
 });
 
+/*RE: 从这里开始哟~*/
 Route::group([/*排行榜相关接口*/], function (){
     Route::get('/rankings', 'RankingController@getAllRankings');
     Route::get('/rankings/{type}', 'RankingController@getRankingOfType');
