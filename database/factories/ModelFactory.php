@@ -156,6 +156,8 @@ $factory->define(GiftCategory::class, function (Faker\Generator $faker) {
 $factory->define(GiftBundle::class, function (Faker\Generator $faker) {
     return [
         'history_id' => $faker->randomNumber(),
+        'passenger_id' => $faker->randomNumber(),
+        'driver_id' => $faker->randomNumber(),
         'gift_id'    => $faker->randomNumber(),
         'amount'     => $faker->randomNumber(2),
     ];

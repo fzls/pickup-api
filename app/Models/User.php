@@ -106,7 +106,7 @@ class User extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function gift_bundles_sent() {
-        return $this->hasManyThrough(GiftBundle::class, History::class, 'passenger_id');
+        return $this->hasMany(GiftBundle::class, 'passenger_id');
     }
 
     /**
@@ -115,7 +115,7 @@ class User extends Model {
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function gift_bundles_received() {
-        return $this->hasManyThrough(GiftBundle::class, History::class, 'driver_id');
+        return $this->hasMany(GiftBundle::class, 'driver_id');
     }
 
     /**

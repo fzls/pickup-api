@@ -80,32 +80,36 @@ Route::group([/*当前位置接口*/], function () {
 
 Route::group([/*余额相关接口*/], function () {
     Route::get('/money', 'MoneyController@getRemainingMoney');
-    Route::post('/money/{recharge_amount}', 'MoneyController@recharge');
-    Route::delete('/money/{withdraw_amount}', 'MoneyController@withdraw');
-    Route::post('/transfer/{to}/{amount}', 'MoneyController@transfer');
+    Route::post('/money', 'MoneyController@recharge');
+    Route::delete('/money', 'MoneyController@withdraw');
+    Route::post('/transfer', 'MoneyController@transfer');
 });
 
-/*RE: 从这里开始哟~*/
 Route::group([/*订单相关接口*/], function () {
     Route::get('/orders/recharges', 'OrderController@getRechargeOrders');
+    Route::get('/orders/recharges/{recharge}', 'OrderController@getRechargeOrder');
     Route::get('/orders/withdraws', 'OrderController@getWithdrawOrders');
+    Route::get('/orders/withdraws/{withdraw}', 'OrderController@getWithdrawOrder');
     Route::get('/orders/payments', 'OrderController@getPaymentOrders');
+    Route::get('/orders/payments/{payment}', 'OrderController@getPaymentOrder');
     Route::get('/orders/revenues', 'OrderController@getRevenueOrders');
+    Route::get('/orders/revenues/{revenue}', 'OrderController@getRevenueOrder');
 });
 
 Route::group([/*礼物相关接口*/], function () {
     Route::get('/gift-categories', 'GiftController@getGiftCategories');
     Route::post('/gift-categories', 'GiftController@addGiftCategory');
-    Route::get('/gift-categories/{gift}', 'GiftController@getGiftCategory');
-    Route::put('/gift-categories/{gift}', 'GiftController@updateGiftCategory');
-    Route::delete('/gift-categories/{gift}', 'GiftController@removeGiftCategory');
+    Route::get('/gift-categories/{category}', 'GiftController@getGiftCategory');
+    Route::put('/gift-categories/{category}', 'GiftController@updateGiftCategory');
+    Route::delete('/gift-categories/{category}', 'GiftController@removeGiftCategory');
     Route::get('/gifts', 'GiftController@getGifts');
-//    Route::post('/gifts', '');
+    Route::get('/gifts/{gift}', 'GiftController@getGift');
 });
 
+/*RE: 从这里开始哟~*/
 Route::group([/*评价与投诉接口*/], function (){
-    Route::post('/rater/{to}', 'ReviewAndTousuController@rate');
-    Route::post('/tousu/{to}', 'ReviewAndTousuController@tousu');
+    Route::post('/rater', 'ReviewAndTousuController@rate');
+    Route::post('/tousu', 'ReviewAndTousuController@tousu');
 });
 
 Route::group([/*排行榜相关接口*/], function (){

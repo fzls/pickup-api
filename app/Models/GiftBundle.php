@@ -17,6 +17,8 @@ class GiftBundle extends Model
 
     protected $fillable = [
         'history_id',
+        'passenger_id',
+        'driver_id',
         'gift_id',
         'amount'
     ];
@@ -39,5 +41,13 @@ class GiftBundle extends Model
      */
     public function gift(){
         return $this->belongsTo(GiftCategory::class, 'gift_id');
+    }
+
+    public function passenger(){
+        return $this->belongsTo(User::class, 'passenger_id');
+    }
+
+    public function driver(){
+        return $this->belongsTo(User::class, 'driver_id');
     }
 }

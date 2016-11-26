@@ -7,11 +7,18 @@ use PickupApi\Models\User;
 
 class ReviewAndTousuController extends Controller
 {
-    public function rate(User $to){
+    public function rate(){
+        $this->validate(
+            $this->request,
+            [
+                'to'=>'required|integer|exists:users,id',
+            ]
+        );
 
+        /*TODO: meow*/
     }
 
-    public function tousu(User $to){
+    public function tousu(){
 
     }
 }
