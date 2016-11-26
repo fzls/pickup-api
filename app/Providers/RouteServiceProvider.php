@@ -22,18 +22,24 @@ class RouteServiceProvider extends ServiceProvider {
      */
     public function boot() {
         /*路由参数的一些限制条件*/
-        \Route::pattern('chat', '[0-9]+');
-        \Route::pattern('gift', '[0-9]+');
-        \Route::pattern('history', '[0-9]+');
-        \Route::pattern('location', '[0-9]+');
-        \Route::pattern('notification', '[0-9]+');
-        \Route::pattern('pal', '[0-9]+');
-        \Route::pattern('to', '[0-9]+');
-        \Route::pattern('user', '[0-9]+');
-        \Route::pattern('vehicle', '[0-9]+');
-        \Route::pattern('recharge_amount', '[0-9]+');
-        \Route::pattern('withdraw_amount', '[0-9]+');
-        \Route::pattern('amount', '[0-9\.]+');
+        $regex_id = '[0-9]+';
+        $regex_numeric = '[0-9\.]+';
+        \Route::pattern('chat', $regex_id);
+        \Route::pattern('gift', $regex_id);
+        \Route::pattern('history', $regex_id);
+        \Route::pattern('location', $regex_id);
+        \Route::pattern('notification', $regex_id);
+        \Route::pattern('pal', $regex_id);
+        \Route::pattern('to', $regex_id);
+        \Route::pattern('user', $regex_id);
+        \Route::pattern('vehicle', $regex_id);
+        \Route::pattern('recharge_amount', $regex_id);
+        \Route::pattern('withdraw_amount', $regex_id);
+        \Route::pattern('amount', $regex_numeric);
+        \Route::pattern('recharge', $regex_id);
+        \Route::pattern('withdraw', $regex_id);
+        \Route::pattern('payment', $regex_id);
+        \Route::pattern('revenue', $regex_id);
 
         parent::boot();
     }

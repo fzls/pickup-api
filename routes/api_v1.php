@@ -88,9 +88,13 @@ Route::group([/*余额相关接口*/], function () {
 /*RE: 从这里开始哟~*/
 Route::group([/*订单相关接口*/], function () {
     Route::get('/orders/recharges', 'OrderController@getRechargeOrders');
+    Route::get('/orders/recharges/{recharge}', 'OrderController@getRechargeOrder');
     Route::get('/orders/withdraws', 'OrderController@getWithdrawOrders');
+    Route::get('/orders/withdraws/{withdraw}', 'OrderController@getWithdrawOrder');
     Route::get('/orders/payments', 'OrderController@getPaymentOrders');
+    Route::get('/orders/payments/{payment}', 'OrderController@getPaymentOrder');
     Route::get('/orders/revenues', 'OrderController@getRevenueOrders');
+    Route::get('/orders/revenues/{revenue}', 'OrderController@getRevenueOrder');
 });
 
 Route::group([/*礼物相关接口*/], function () {
