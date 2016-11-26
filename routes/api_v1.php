@@ -80,12 +80,11 @@ Route::group([/*当前位置接口*/], function () {
 
 Route::group([/*余额相关接口*/], function () {
     Route::get('/money', 'MoneyController@getRemainingMoney');
-    Route::post('/money/{recharge_amount}', 'MoneyController@recharge');
-    Route::delete('/money/{withdraw_amount}', 'MoneyController@withdraw');
-    Route::post('/transfer/{to}/{amount}', 'MoneyController@transfer');
+    Route::post('/money', 'MoneyController@recharge');
+    Route::delete('/money', 'MoneyController@withdraw');
+    Route::post('/transfer', 'MoneyController@transfer');
 });
 
-/*RE: 从这里开始哟~*/
 Route::group([/*订单相关接口*/], function () {
     Route::get('/orders/recharges', 'OrderController@getRechargeOrders');
     Route::get('/orders/recharges/{recharge}', 'OrderController@getRechargeOrder');
@@ -97,6 +96,7 @@ Route::group([/*订单相关接口*/], function () {
     Route::get('/orders/revenues/{revenue}', 'OrderController@getRevenueOrder');
 });
 
+/*RE: 从这里开始哟~*/
 Route::group([/*礼物相关接口*/], function () {
     Route::get('/gift-categories', 'GiftController@getGiftCategories');
     Route::post('/gift-categories', 'GiftController@addGiftCategory');

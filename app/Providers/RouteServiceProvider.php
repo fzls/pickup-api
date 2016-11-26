@@ -30,12 +30,8 @@ class RouteServiceProvider extends ServiceProvider {
         \Route::pattern('location', $regex_id);
         \Route::pattern('notification', $regex_id);
         \Route::pattern('pal', $regex_id);
-        \Route::pattern('to', $regex_id);
         \Route::pattern('user', $regex_id);
         \Route::pattern('vehicle', $regex_id);
-        \Route::pattern('recharge_amount', $regex_id);
-        \Route::pattern('withdraw_amount', $regex_id);
-        \Route::pattern('amount', $regex_numeric);
         \Route::pattern('recharge', $regex_id);
         \Route::pattern('withdraw', $regex_id);
         \Route::pattern('payment', $regex_id);

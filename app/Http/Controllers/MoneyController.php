@@ -15,13 +15,26 @@ class MoneyController extends Controller {
         return RestResponse::single_without_link($money, '主人还有这么多money呀');
     }
 
-    public function recharge($recharge_amount) {
+    public function recharge() {
+        $this->validate(
+            $this->request,
+            [
+                'recharge_amount'=>'required|numeric|min:0',
+            ]
+        );
+
         /* 支付在客户端进行*/
-        return $this->updateMoney($recharge_amount, '哇，主人你又氪金了嘛');
+        return $this->updateMoney($this->request->get('recharge_amount'), '哇，主人你又氪金了嘛');
     }
 
-    public function withdraw($withdraw_amount) {
-        $response = $this->updateMoney(-$withdraw_amount, '呜呜呜，主人为什么要把钱拿回去呀TAT');
+    public function withdraw() {
+        $this->validate(
+            $this->request,
+            [
+                'withdraw_amount'=>'required|numeric|min:0',
+            ]
+        );
+        $response = $this->updateMoney(-$this->request->get('withdraw_amount'), '呜呜呜，主人为什么要把钱拿回去呀TAT');
 
         /*NOTE：这里处理实际的提现流程，如加入一个消息队列中，又另一个服务器专门处理转账到指定用户账户中，如支付宝中*/
         /*TODO*/
@@ -50,8 +63,19 @@ class MoneyController extends Controller {
         );
     }
 
-    public function transfer(User $to, $amount) {
+    public function transfer() {
+        $this->validate(
+            $this->request,
+            [
+                'to'=>'required|integer|exists:users,id',
+                'amount'=>'required|numeric|min:0'
+            ]
+        );
+
         $from = TokenUtil::getUser();
+        $to = User::find($this->request->get('to'));
+        $amount = $this->request->get('amount');
+
 
         $details = [];
         $details['amount']=$amount;

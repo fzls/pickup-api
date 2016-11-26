@@ -14,6 +14,10 @@ class CreateGiftBundlesTable extends Migration {
             $table->increments('id');
             $table->unsignedInteger('history_id')
                   ->comment('这个礼品包在哪次行程中送出');
+            $table->unsignedInteger('passenger_id')
+                  ->comment('这个礼品包由谁送出');
+            $table->unsignedInteger('driver_id')
+                  ->comment('这个礼品包送给谁');
             $table->unsignedInteger('gift_id')
                   ->comment('这个礼品包包含的礼品的id');
             $table->unsignedInteger('amount')

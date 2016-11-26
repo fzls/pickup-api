@@ -177,6 +177,8 @@ class DatabaseSeeder extends Seeder {
                     'gift_id' => function () use ($gift_categories) {
                         return $gift_categories->random()->id;
                     },
+                    'passenger_id'=>$h->passenger_id,
+                    'driver_id'=>$h->driver_id,
                 ]
             ));
             /*并为这些行程分别依概率创建双向的评价与评论*/
