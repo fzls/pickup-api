@@ -9,13 +9,6 @@ use PickupApi\Utils\TokenUtil;
 
 class CurrentLocationController extends Controller
 {
-    public $redis;
-
-    public function __construct(Request $request) {
-        parent::__construct($request);
-        $this->redis = \Redis::connection();
-    }
-
     public function getCurrentLocationOf(User $user){
         $current_location = json_decode($this->redis->get($this->getRedisKey($user->id)),true);
 

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use PickupApi\Http\RestResponse;
 use PickupApi\TokenUtil;
 
@@ -112,16 +113,16 @@ Route::group([/*评价与投诉接口*/], function (){
     /*TODO：获取反馈与评论的接口*/
 });
 
-/*RE: 从这里开始哟~*/
 Route::group([/*排行榜相关接口*/], function (){
     Route::get('/rankings', 'RankingController@getAllRankings');
-    Route::get('/rankings/{type}', 'RankingController@getRankingOfType');
+    Route::get('/rankings/{type}/{interval?}/{count?}', 'RankingController@getRankingOfType');
     /*获取某一种类型的排行榜{highest_rated_drivers, most_attractive_drivers, most_rated_passengers}
     对象类别分三个，highest_rated_driver_rankings, most_attractive_driver_rankings, most_rated_passenger_rankings，
     时间段类别分过去一天，一周，一月，以及总排行，通过选择时间周期调整，默认显示一周的结果
 */
 });
 
+/*RE: 从这里开始哟~*/
 Route::group([/*聊天接口*/], function (){
     Route::get('/chats', 'ChatController@getChats');
     Route::get('/chats/{pal}', 'ChatController@getChatsWith');

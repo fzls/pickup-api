@@ -140,6 +140,13 @@ return [
         'total'  => 10,
         'digits' => 4,
     ],
+
+    'ranking_types' =>[
+        'highest_rated_drivers',
+        'most_attractive_drivers',
+        'highest_rated_passengers',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

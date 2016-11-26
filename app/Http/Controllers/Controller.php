@@ -15,9 +15,11 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public $request;
+    public $redis;
 
     public function __construct(Request $request) {
         $this->request = $request;
+        $this->redis = \Redis::connection();
         /* 如果在这里初始化当前的用户，则当无法找到用户时报错时，在terminate阶段容器会重新初始化该类，导致再次触发错误，故现在只在需要当前用户的时候调用它 */
     }
 
