@@ -96,7 +96,6 @@ Route::group([/*订单相关接口*/], function () {
     Route::get('/orders/revenues/{revenue}', 'OrderController@getRevenueOrder');
 });
 
-/*RE: 从这里开始哟~*/
 Route::group([/*礼物相关接口*/], function () {
     Route::get('/gift-categories', 'GiftController@getGiftCategories');
     Route::post('/gift-categories', 'GiftController@addGiftCategory');
@@ -107,9 +106,10 @@ Route::group([/*礼物相关接口*/], function () {
     Route::get('/gifts/{gift}', 'GiftController@getGift');
 });
 
+/*RE: 从这里开始哟~*/
 Route::group([/*评价与投诉接口*/], function (){
-    Route::post('/rater/{to}', 'ReviewAndTousuController@rate');
-    Route::post('/tousu/{to}', 'ReviewAndTousuController@tousu');
+    Route::post('/rater', 'ReviewAndTousuController@rate');
+    Route::post('/tousu', 'ReviewAndTousuController@tousu');
 });
 
 Route::group([/*排行榜相关接口*/], function (){
