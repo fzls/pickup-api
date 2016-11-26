@@ -17,6 +17,8 @@ class GiftBundle extends Model
 
     protected $fillable = [
         'history_id',
+        'passenger_id',
+        'driver_id',
         'gift_id',
         'amount'
     ];

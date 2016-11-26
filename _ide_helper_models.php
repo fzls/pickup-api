@@ -90,14 +90,20 @@ namespace PickupApi\Models{
  *
  * @property integer $id
  * @property integer $history_id 这个礼品包在哪次行程中送出
+ * @property integer $passenger_id 这个礼品包由谁送出
+ * @property integer $driver_id 这个礼品包送给谁
  * @property integer $gift_id 这个礼品包包含的礼品的id
  * @property integer $amount 这个礼品包包含的礼品的个数
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property-read \PickupApi\Models\History $history
  * @property-read \PickupApi\Models\GiftCategory $gift
+ * @property-read \PickupApi\Models\User $passenger
+ * @property-read \PickupApi\Models\User $driver
  * @method static \Illuminate\Database\Query\Builder|\PickupApi\Models\GiftBundle whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\PickupApi\Models\GiftBundle whereHistoryId($value)
+ * @method static \Illuminate\Database\Query\Builder|\PickupApi\Models\GiftBundle wherePassengerId($value)
+ * @method static \Illuminate\Database\Query\Builder|\PickupApi\Models\GiftBundle whereDriverId($value)
  * @method static \Illuminate\Database\Query\Builder|\PickupApi\Models\GiftBundle whereGiftId($value)
  * @method static \Illuminate\Database\Query\Builder|\PickupApi\Models\GiftBundle whereAmount($value)
  * @method static \Illuminate\Database\Query\Builder|\PickupApi\Models\GiftBundle whereCreatedAt($value)

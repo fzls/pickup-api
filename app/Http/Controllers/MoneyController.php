@@ -75,7 +75,7 @@ class MoneyController extends Controller {
         $from = TokenUtil::getUser();
         $to = User::find($this->request->get('to'));
         $amount = $this->request->get('amount');
-
+        /*TODO: 添加赠送礼品的逻辑处理*/
 
         $details = [];
         $details['amount']=$amount;

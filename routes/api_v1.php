@@ -100,11 +100,11 @@ Route::group([/*订单相关接口*/], function () {
 Route::group([/*礼物相关接口*/], function () {
     Route::get('/gift-categories', 'GiftController@getGiftCategories');
     Route::post('/gift-categories', 'GiftController@addGiftCategory');
-    Route::get('/gift-categories/{gift}', 'GiftController@getGiftCategory');
-    Route::put('/gift-categories/{gift}', 'GiftController@updateGiftCategory');
-    Route::delete('/gift-categories/{gift}', 'GiftController@removeGiftCategory');
+    Route::get('/gift-categories/{category}', 'GiftController@getGiftCategory');
+    Route::put('/gift-categories/{category}', 'GiftController@updateGiftCategory');
+    Route::delete('/gift-categories/{category}', 'GiftController@removeGiftCategory');
     Route::get('/gifts', 'GiftController@getGifts');
-//    Route::post('/gifts', '');
+    Route::get('/gifts/{gift}', 'GiftController@getGift');
 });
 
 Route::group([/*评价与投诉接口*/], function (){

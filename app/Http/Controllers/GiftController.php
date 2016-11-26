@@ -3,7 +3,9 @@
 namespace PickupApi\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PickupApi\Exceptions\PickupApiException;
 use PickupApi\Http\RestResponse;
+use PickupApi\Models\GiftBundle;
 use PickupApi\Models\GiftCategory;
 use PickupApi\Utils\TokenUtil;
 
@@ -39,11 +41,11 @@ class GiftController extends Controller
         return RestResponse::created($category, '又有一种新的礼物了呢');
     }
 
-    public function getGiftCategory(GiftCategory $gift){
-        return RestResponse::single($gift);
+    public function getGiftCategory(GiftCategory $category){
+        return RestResponse::single($category);
     }
 
-    public function updateGiftCategory(GiftCategory $gift){
+    public function updateGiftCategory(GiftCategory $category){
         $this->assertHasPermission();
 
         $this->validate(
@@ -66,15 +68,15 @@ class GiftController extends Controller
         ));
         /*FIXME: 所有的update不止要用only只取所需要的部分，还需要用array_filter去掉本次请求中未提供的key*/
 
-        $gift->update($category_info);
+        $category->update($category_info);
 
-        return RestResponse::single($gift);
+        return RestResponse::single($category);
     }
 
-    public function removeGiftCategory(GiftCategory $gift){
+    public function removeGiftCategory(GiftCategory $category){
         $this->assertHasPermission();
 
-        $gift->delete();
+        $category->delete();
         return RestResponse::deleted();
     }
 
@@ -82,7 +84,20 @@ class GiftController extends Controller
         return RestResponse::paginated(TokenUtil::getUser()->gift_bundles_received()->getQuery());
     }
 
+    public function getGift(GiftBundle $gift){
+        $this->assertIsOwner($gift->driver_id);
+
+        return RestResponse::single($gift);
+    }
+
     public function assertHasPermission(){
         /*TODO: 确保具有修改礼物种类的权限*/
+    }
+
+    public function assertIsOwner($uid){
+        if($uid !== TokenUtil::getUserId()){
+            throw new PickupApiException(403, '主人不能碰别人的东西哟');
+            /*FIXME: 新建一个 PickupApiUnauthorizedException*/
+        }
     }
 }

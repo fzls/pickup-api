@@ -26,6 +26,7 @@ class RouteServiceProvider extends ServiceProvider {
         $regex_numeric = '[0-9\.]+';
         \Route::pattern('chat', $regex_id);
         \Route::pattern('gift', $regex_id);
+        \Route::pattern('category', $regex_id);
         \Route::pattern('history', $regex_id);
         \Route::pattern('location', $regex_id);
         \Route::pattern('notification', $regex_id);
