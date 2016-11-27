@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration {
                   ->comment('继承自认证服务器(用户头像地址)');
             $table->unsignedInteger('school_id')
                   ->comment('学校id');
-            $table->text('description')->default('')
+            $table->text('description')
                   ->comment('自我介绍');
             $table->decimal('money', 13, 4)->default(0)
                   ->comment('余额');

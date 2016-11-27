@@ -14,7 +14,7 @@ class CreateSchoolsTable extends Migration {
             $table->increments('id');
             $table->string('name')->unique()
                   ->comment('学校名称');
-            $table->text('description')->default('')
+            $table->text('description')
                   ->comment('学校简介');
             $table->timestamps();
         });
