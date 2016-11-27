@@ -67,8 +67,8 @@ class Handler extends ExceptionHandler {
 
         /*return json only*/
 
-//        return response()->json(RestResponse::exception(400, get_class($exception).' : '.$exception->getMessage()));
-        return parent::render($request, $exception);
+        return response()->json(RestResponse::exception(400, get_class($exception).' : '.$exception->getMessage()));
+//        return parent::render($request, $exception);
     }
 
     /**

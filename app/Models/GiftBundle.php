@@ -43,10 +43,20 @@ class GiftBundle extends Model
         return $this->belongsTo(GiftCategory::class, 'gift_id');
     }
 
+    /**
+     * 获取礼品包的送出者
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function passenger(){
         return $this->belongsTo(User::class, 'passenger_id');
     }
 
+    /**
+     * 获取礼品包的接收者
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function driver(){
         return $this->belongsTo(User::class, 'driver_id');
     }

@@ -10,6 +10,11 @@ use PickupApi\Models\User;
 use PickupApi\Utils\TokenUtil;
 
 class CheckinController extends Controller {
+    /**
+     * 检测用户是否今日是否已经签到过
+     *
+     * @return RestResponse
+     */
     public function checkIfCheckedIn() {
         $checked_in             = $this->redis->getbit($this->getCheckInKey(), TokenUtil::getUserId());
         $checked_in_message     = '主人已经签到过了呢';
@@ -18,6 +23,13 @@ class CheckinController extends Controller {
         return RestResponse::single_without_link($checked_in, $checked_in ? $checked_in_message : $not_checked_in_message);
     }
 
+    /**
+     * 若用户未签到，则将用户签到
+     *
+     * @return RestResponse
+     * @throws \Throwable
+     * @throws \Exception
+     */
     public function checkin() {
         $user_id = TokenUtil::getUserId();
         $checked_in             = $this->redis->getbit($this->getCheckInKey(), $user_id);
@@ -36,6 +48,11 @@ class CheckinController extends Controller {
         return RestResponse::single_without_link(compact('obtained_credit'), '主人的积分又变多了呢');
     }
 
+    /**
+     * 返回当日的签到用的redis key
+     *
+     * @return string
+     */
     public function getCheckInKey() {
         $today = Carbon::now()->toDateString();
 

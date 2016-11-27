@@ -4,6 +4,7 @@ namespace PickupApi\Http\Controllers;
 
 use Illuminate\Http\Request;
 use PickupApi\Exceptions\PickupApiException;
+use PickupApi\Exceptions\UnauthorizedException;
 use PickupApi\Http\RestResponse;
 use PickupApi\Models\History;
 use PickupApi\Models\Review;
@@ -11,7 +12,17 @@ use PickupApi\Models\User;
 use PickupApi\Models\UserFeedbackSession;
 use PickupApi\Utils\TokenUtil;
 
+/**
+ * Class ReviewAndTousuController
+ * @package PickupApi\Http\Controllers
+ */
 class ReviewAndTousuController extends Controller {
+    /**
+     * 用户对另一个用户进行评价
+     *
+     * @return RestResponse
+     * @throws UnauthorizedException
+     */
     public function rate() {
         $this->validate(
             $this->request,
@@ -30,7 +41,7 @@ class ReviewAndTousuController extends Controller {
         if (! (($user_id === $history->passenger_id && $to_id === $history->driver_id) ||
             ($user_id === $history->driver_id && $to_id === $history->passenger_id))
         ) {
-            throw new PickupApiException(403, '不能替别人的订单进行评论哦');
+            throw new UnauthorizedException('不能替别人的订单进行评论哦');
         }
 
         $basic_info  = [
@@ -46,6 +57,11 @@ class ReviewAndTousuController extends Controller {
         return RestResponse::created($rate);
     }
 
+    /**
+     * 用户进行反馈，包括投诉用户，提建议等等
+     *
+     * @return RestResponse
+     */
     public function AddFeedbackSession() {
         $this->validate(
             $this->request,

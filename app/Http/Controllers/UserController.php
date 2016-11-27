@@ -6,6 +6,10 @@ use PickupApi\Http\RestResponse;
 use PickupApi\Models\User;
 use PickupApi\Utils\TokenUtil;
 
+/**
+ * Class UserController
+ * @package PickupApi\Http\Controllers
+ */
 class UserController extends Controller {
     /**
      * 获取用户们的信息
@@ -17,29 +21,29 @@ class UserController extends Controller {
 
     /**
      * 添加一个新的用户, 即当前token所对应的用户，用于初始化应用相关信息
+     * @throws \Exception
      */
     public function addNewUser() {
         $this->validate(
             $this->request,
             [
                 'school_id'      => 'required|exists:schools,id',
-                'money'          => 'numeric|max:0',
-                'checkin_points' => 'numeric|max:0',
-                'charm_points'   => 'numeric|max:0',
             ]
         );
 
         $user_info_from_oauth_server = collect(TokenUtil::getUserInfo())
             ->only(['id', 'username', 'email', 'phone', 'avatar']);
-        $info                        = array_merge($this->request->all(), $user_info_from_oauth_server);
-        $user                        = User::find($id);
+        $info                        = array_merge($this->request->only('school_id'), $user_info_from_oauth_server);
+        $user                        = User::find(TokenUtil::getUserId());
 
         if ($user) {
             /*如果用户已存在*/
             return RestResponse::meta_only(204, '人家早就知道主人様啦~');
         } else {
             /*否则新建用户,并且默认未激活，TODO:需要验证浙大邮箱后激活*/
-            return RestResponse::created(User::create($info)->delete(), '新的小伙伴加入了呢，不过别忘了先去找浙大喵激活才能跟我一起玩哦~');
+            $user = User::create($info);
+            $user->delete();
+            return RestResponse::created($user, '新的小伙伴加入了呢，不过别忘了先去找浙大喵激活才能跟我一起玩哦~');
         }
     }
 
@@ -66,6 +70,7 @@ class UserController extends Controller {
 
     /**
      * 更新当前请求的token所代理的用户的信息
+     * @throws \PickupApi\Exceptions\UserNotFoundException
      */
     public function updateCurrentUserProfile() {
         $user = TokenUtil::getUser();
@@ -85,6 +90,7 @@ class UserController extends Controller {
 
     /**
      * 将当前请求的token所代理的用户账户注销掉（用户手动停用）
+     * @throws \PickupApi\Exceptions\UserNotFoundException
      */
     public function markAsDeleted() {
         $user = TokenUtil::getUser();
@@ -93,6 +99,12 @@ class UserController extends Controller {
         return RestResponse::deleted('meow，主人被我藏起来了呢~');
     }
 
+    /**
+     * 激活当前用户
+     *
+     * @return RestResponse
+     * @throws \PickupApi\Exceptions\UserNotFoundException
+     */
     public function markAsActivated() {
         $user = TokenUtil::getUser(true);
         $user->restore();

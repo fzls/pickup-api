@@ -3,18 +3,33 @@
 namespace PickupApi\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PickupApi\Exceptions\InvalidOperationException;
 use PickupApi\Exceptions\PickupApiException;
 use PickupApi\Http\RestResponse;
 use PickupApi\Models\User;
 use PickupApi\Utils\TokenUtil;
 
+/**
+ * Class MoneyController
+ * @package PickupApi\Http\Controllers
+ */
 class MoneyController extends Controller {
+    /**
+     * 获取余额
+     *
+     * @return RestResponse
+     */
     public function getRemainingMoney() {
         $money = TokenUtil::getUser()->money;
 
         return RestResponse::single_without_link($money, '主人还有这么多money呀');
     }
 
+    /**
+     * 用户进行充值，用户的实际转账在客户端用第三方支付的sdk进行
+     *
+     * @return RestResponse
+     */
     public function recharge() {
         $this->validate(
             $this->request,
@@ -27,6 +42,11 @@ class MoneyController extends Controller {
         return $this->updateMoney($this->request->get('recharge_amount'), '哇，主人你又氪金了嘛');
     }
 
+    /**
+     * 用户提现，在服务端进行实际地转账到用户账号，如每周六进行统一转账等等
+     *
+     * @return RestResponse
+     */
     public function withdraw() {
         $this->validate(
             $this->request,
@@ -42,6 +62,16 @@ class MoneyController extends Controller {
         return $response;
     }
 
+    /**
+     * 更新用户的余额，用于充值或提现的辅助方法
+     *
+     * @param $change
+     * @param $message
+     *
+     * @return RestResponse
+     * @throws \PickupApi\Exceptions\InvalidOperationException
+     * @throws \PickupApi\Exceptions\UserNotFoundException
+     */
     public function updateMoney($change, $message) {
         $user = TokenUtil::getUser();
 
@@ -50,10 +80,18 @@ class MoneyController extends Controller {
         return RestResponse::single_without_link($user->money, $message);
     }
 
+    /**
+     * 为该用户更新账户余额
+     *
+     * @param User $user
+     * @param      $change
+     *
+     * @throws InvalidOperationException
+     */
     public function updateMoneyFor(User $user, $change){
         $after_change = $user->money + $change;
         if ($after_change < 0) {
-            throw new PickupApiException(400, '主人没有这么多钱可以拿回去哟');
+            throw new InvalidOperationException('主人没有这么多钱可以拿回去哟');
         }
 
         $user->update(
@@ -63,6 +101,13 @@ class MoneyController extends Controller {
         );
     }
 
+    /**
+     * 用户在行程后向司机进行支付操作，不需要涉及第三方支付，在系统内部解决
+     *
+     * @return RestResponse
+     * @throws \Throwable
+     * @throws \Exception
+     */
     public function transfer() {
         $this->validate(
             $this->request,

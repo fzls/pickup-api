@@ -16,9 +16,9 @@ use PickupApi\Http\RestResponse;
 use PickupApi\Models\User;
 
 /**
- * Class Util
+ * Class TokenUtil
  *
- * 封装一些经常用到的操作
+ * 封装一些经常用到的与token相关的操作
  *
  * @package PickupApi
  */
@@ -59,11 +59,22 @@ class TokenUtil {
         return self::getPayload()['user'];
     }
 
+
+    /**
+     * 获取token所代表的用户的id
+     *
+     * @return mixed
+     */
+    public static function getUserId() {
+        return self::getUserInfo()['id'];
+    }
+
+
     /**
      * 返回本次会话的token所代理的用户的应用相关信息（从应用服务器处获得）
      *
      * TODO：设置一层middleware，用以确定到达应用系统内时，用户已经完善应用相关信息，具体措施如下
-     * 如果在应用服务器中无该用户的信息，则新创建一个id为该id的记录，并将用户重定向到完善基本应用相关信息的页面
+     * 如果在应用服务器中无该用户的信息，则返回完善基本应用相关信息的页面url，在客户端将用户带到该页面进行应用注册
      * ps：同一个用户在两处的id是相同的，其中应用服务器的id从属于认证服务器的id
      *
      * @return User
@@ -88,8 +99,4 @@ class TokenUtil {
         return $user;
     }
 
-
-    public static function getUserId($with_trashed = false) {
-        return self::getUser($with_trashed)->id;
-    }
 }

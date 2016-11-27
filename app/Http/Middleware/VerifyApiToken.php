@@ -12,7 +12,15 @@ use PickupApi\Http\RestResponse;
 TODO: 完成容器化-----验证token是否有效（验证身份）-----验证token是否可以进行某项操作，即scope（验证权限）
 NOTE: api服务器是生产者，不需要client id，只需要验证token，不需要负责获取token
 */
+
+/**
+ * Class VerifyApiToken
+ * @package PickupApi\Http\Middleware
+ */
 class VerifyApiToken {
+    /**
+     * @var string
+     */
     public $token_uri;
 
     /**
@@ -42,6 +50,13 @@ class VerifyApiToken {
         return $next($request);
     }
 
+    /**
+     * 检测token是否有效
+     *
+     * @param $token
+     *
+     * @return bool
+     */
     public function isValid($token) {
         /*检测是否为空*/
         if (empty($token)) {
@@ -63,6 +78,13 @@ class VerifyApiToken {
         return true;
     }
 
+    /**
+     * 检测token是否过期
+     *
+     * @param $expires_at
+     *
+     * @return bool
+     */
     public function expired($expires_at){
         $expires_at = new Carbon($expires_at);
         return Carbon::now()->gt($expires_at);

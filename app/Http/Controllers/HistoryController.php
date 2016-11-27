@@ -5,47 +5,103 @@ namespace PickupApi\Http\Controllers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use PickupApi\Exceptions\PickupApiException;
+use PickupApi\Exceptions\UnauthorizedException;
 use PickupApi\Http\RestResponse;
 use PickupApi\Models\History;
 use PickupApi\Models\HistorySnapshot;
 use PickupApi\Utils\TokenUtil;
 
-class HistoryController extends Controller
-{
-    public function getAllHistory(){
+/**
+ * Class HistoryController
+ * @package PickupApi\Http\Controllers
+ */
+class HistoryController extends Controller {
+    /**
+     * 获取用户的历史行程
+     *
+     * @return RestResponse
+     * @throws \PickupApi\Exceptions\UserNotFoundException
+     * @throws \InvalidArgumentException
+     */
+    public function getAllHistory() {
         return RestResponse::paginated(TokenUtil::getUser()->history()->getQuery());
     }
 
-    public function getHistory(History $history){
+    /**
+     * 获取用户的某次历史行程
+     *
+     * @param History $history
+     *
+     * @return RestResponse
+     */
+    public function getHistory(History $history) {
         $this->assertIsPassenger($history);
 
         return RestResponse::single($history);
     }
 
-    public function finishHistory(History $history){
+    /**
+     * 完成一次行程
+     *
+     * @param History $history
+     *
+     * @return RestResponse
+     */
+    public function finishHistory(History $history) {
         $this->assertIsPassenger($history);
 
-        $history->update(['finished_at'=>Carbon::now()]);
+        /*TODO：客户端发送两种费用*/
+        $history->update(['finished_at' => Carbon::now()]);
+
         return RestResponse::meta_only(200, '又结束了一次旅行了呢');
     }
 
-    public function getAllDriveHistory(){
+    /**
+     * 获取所有的出车行程
+     *
+     * @return RestResponse
+     * @throws \PickupApi\Exceptions\UserNotFoundException
+     * @throws \InvalidArgumentException
+     */
+    public function getAllDriveHistory() {
         return RestResponse::paginated(TokenUtil::getUser()->drive_history()->getQuery());
     }
 
-    public function getDriveHistory(History $history){
+    /**
+     * 获取用户的某次出车行程
+     *
+     * @param History $history
+     *
+     * @return RestResponse
+     */
+    public function getDriveHistory(History $history) {
         $this->assertIsDriver($history);
 
         return RestResponse::single($history);
     }
 
-    public function getSnapshots(History $history){
+    /**
+     * 获取某次行程的快照集
+     *
+     * @param History $history
+     *
+     * @return RestResponse
+     * @throws \InvalidArgumentException
+     */
+    public function getSnapshots(History $history) {
         $this->assertIsInHistory($history);
 
         return RestResponse::paginated($history->snapshots()->getQuery());
     }
 
-    public function addNewSnapshot(History $history){
+    /**
+     * 添加一个新的行程快照
+     *
+     * @param History $history
+     *
+     * @return RestResponse
+     */
+    public function addNewSnapshot(History $history) {
         /*由司机端负责创建*/
         $this->assertIsDriver($history);
 
@@ -59,11 +115,9 @@ class HistoryController extends Controller
 
         $snapshot = HistorySnapshot::firstOrCreate(
             array_merge(
-                $this->request->all(),/*FIXME: 所有的创建使用的参数都显式调用，而不是直接用all*/
-                                        /*比如用 $this->request->only(['latitude', 'longitude'])*/
-
+                $this->request->only('latitude'),
                 [
-                    'history_id'=>$history->id,
+                    'history_id' => $history->id,
                 ]
             )
         );
@@ -71,30 +125,58 @@ class HistoryController extends Controller
         return RestResponse::single($snapshot);
     }
 
-    public function assertIsInHistory(History $history){
+    /**
+     * 确保当前用户参与了该行程
+     *
+     * @param History $history
+     *
+     * @throws \PickupApi\Exceptions\UnauthorizedException
+     */
+    public function assertIsInHistory(History $history) {
         $this->assertIdentity([$history->passenger_id, $history->driver_id]);
     }
 
-    public function assertIsPassenger(History $history){
+    /**
+     * 确保当前用户作为乘客参与了该行程
+     *
+     * @param History $history
+     *
+     * @throws \PickupApi\Exceptions\UnauthorizedException
+     */
+    public function assertIsPassenger(History $history) {
         $this->assertIdentity($history->passenger_id);
     }
 
-    public function assertIsDriver(History $history){
+    /**
+     * 确保当前用户作为司机参与了该行程
+     *
+     * @param History $history
+     *
+     * @throws \PickupApi\Exceptions\UnauthorizedException
+     */
+    public function assertIsDriver(History $history) {
         $this->assertIdentity($history->driver_id);
     }
 
-    public function assertIdentity($id){
+    /**
+     * 确认用户具有查看该记录的权限
+     *
+     * @param $id
+     *
+     * @throws UnauthorizedException
+     */
+    public function assertIdentity($id) {
         $allowed = false;
         $user_id = TokenUtil::getUserId();
 
-        foreach (collect($id) as $_id){
-            if($user_id === $_id){
+        foreach (collect($id) as $_id) {
+            if ($user_id === $_id) {
                 $allowed = true;
             }
         }
 
-        if(! $allowed){
-            throw new PickupApiException(403 ,"主人不能偷看别人的东西的呢");
+        if (! $allowed) {
+            throw new UnauthorizedException();
         }
     }
 }

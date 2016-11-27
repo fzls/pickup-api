@@ -36,6 +36,11 @@ class Request extends Model {
 
     protected $dates      = ['reserved_at'];
 
+    /**
+     * 获取本条约车记录的发出者
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user() {
         return $this->belongsTo(User::class);
     }

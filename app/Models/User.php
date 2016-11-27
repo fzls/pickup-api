@@ -290,20 +290,12 @@ class User extends Model {
     }
 
     /**
-     * 用户当前的位置，用于在另一端同步
-     *
-     * @return string json-string
-     */
-    public function current_position() {
-        return \Redis::get('current_position:' . $this->id);
-    }
-
-    /**
      * 用户所拥有的权限列表，通过利用客户端发送的token去认证服务器查询获得，存在本地的缓存中，key为token
      *
      * @return mixed
      */
     public function permissions() {
+        /*TODO: 在oauth的接口结果中加上该字段*/
         return TokenUtil::getUserInfo()['permissions'];
     }
 }
