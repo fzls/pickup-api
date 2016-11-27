@@ -92,12 +92,14 @@ class DatabaseSeeder extends Seeder {
             /*若存在，则更新属性*/
             $user->update(
                 [
-                    'username'  => 'Rem',
-                    'email'     => 'Rem@gmail.com',
-                    'phone'     => '15700072333',
+                    'username'   => 'Rem',
+                    'email'      => 'Rem@gmail.com',
+                    'phone'      => '15700072333',
+                    'freezed_at' => null,
+                    'deleted_at' => null,
                 ]
             );
-        }else{
+        } else {
             /*若不存在*/
             $users [] = factory(User::class)->create(
                 [
