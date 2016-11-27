@@ -40,7 +40,7 @@ services:
         # 3. TODO: add scheduler
         # 4. change file permissions
         # 5. run php-fpm
-        command: bash -c "mkdir -p bootstrap/cache && chmod -R 777 storage bootstrap/cache && composer install && php artisan migrate && chmod -R 777 storage bootstrap/cache && php-fpm"
+        command: bash -c "mkdir -p bootstrap/cache && chmod -R 777 storage bootstrap/cache && composer install && chmod -R 777 storage bootstrap/cache && php-fpm"
         #environment:
         #    - TCP_PORTS=9000
         #    - VIRTUAL_HOST=oauth.*.*/*
