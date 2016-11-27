@@ -19,8 +19,16 @@ use PickupApi\TokenUtil;
 Route::get('/test', function (Request $request) {
 //    return RestResponse::json(\PickupApi\Utils\UrlUtil::getAllSupportedMethods(),NO_LINK_NEEDED);
     $token = Cache::get($request->bearerToken());
+    $permissions = \PickupApi\Utils\TokenUtil::getPermissions();
+    ;
 
-    return RestResponse::json(\PickupApi\Utils\TokenUtil::getUser()->unread_notifications, PICKUP_NO_LINK_NEEDED);
+    return RestResponse::json(
+        [
+            $permissions->has('view'),
+            $permissions,
+        ],
+        PICKUP_NO_LINK_NEEDED
+    );
 });
 
 Route::post('/test', function (\Request $request) {

@@ -9,6 +9,7 @@
 namespace PickupApi\Utils;
 
 
+use Illuminate\Support\Collection;
 use PickupApi\Exceptions\InvalidApiTokenException;
 use PickupApi\Exceptions\UserNotFoundException;
 use PickupApi\Http\Meta;
@@ -67,6 +68,16 @@ class TokenUtil {
      */
     public static function getUserId() {
         return self::getUserInfo()['id'];
+    }
+
+
+    /**
+     * 获取token所代表的用户所具有的权限
+     *
+     * @return Collection
+     */
+    public static function getPermissions(){
+        return collect(self::getTokenInfo()['permissions'])->pluck('description', 'name');
     }
 
 

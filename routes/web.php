@@ -53,7 +53,7 @@ Route::get('test', function (\Illuminate\Http\Request $request) {
 //RE: 下面的代码作为测试本API的消费者，在生产环境中应该注释掉
 Route::get('/redirect', function () {
     $query = http_build_query([
-                                  'client_id'     => '4',
+                                  'client_id'     => '1',
                                   'redirect_uri'  => 'http://localhost:888/callback',
                                   'response_type' => 'code',
                                   'scope'         => '',
@@ -68,8 +68,8 @@ Route::get('/callback', function (\Illuminate\Http\Request $request) {
     $response = $http->post(config('auth.server').'/oauth/token', [
         'form_params' => [
             'grant_type'    => 'authorization_code',
-            'client_id'     => '4',
-            'client_secret' => 'rTMVPN5GvXVsmM2erSeRMPzMI0ldEED4Q1fpypJt',
+            'client_id'     => '1',
+            'client_secret' => 'DLyKBQZzuGKFnl4B7VxmtYezdwNtdJhCFWzSdRG4',
             'redirect_uri'  => 'http://localhost:888/callback',
             'code'          => $request->code,
         ],
