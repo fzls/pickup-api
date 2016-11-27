@@ -16,9 +16,9 @@ class CreateHistorySnapshotsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('history_id')
                 ->comment('快照所属行程id');
-            $table->decimal('latitude',config('app.gps_precision.total'),config("app.gps_precision.digits"))
+            $table->decimal('latitude',config('app.gps_precision.total'),config('app.gps_precision.digits'))
                 ->comment('纬度');
-            $table->decimal('longitude',config('app.gps_precision.total'),config("app.gps_precision.digits"))
+            $table->decimal('longitude',config('app.gps_precision.total'),config('app.gps_precision.digits'))
                 ->comment('经度');
             $table->timestamps();
 

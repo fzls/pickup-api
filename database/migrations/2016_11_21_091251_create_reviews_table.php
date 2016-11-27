@@ -22,7 +22,7 @@ class CreateReviewsTable extends Migration
                 ->comment('被评论者id');
             $table->integer('rating')
                 ->comment('评分');
-            $table->text('comment')
+            $table->text('comment')->default('')
                 ->comment('评论');
             $table->timestamps();
 

@@ -12,9 +12,9 @@ class CreateSchoolsTable extends Migration {
     public function up() {
         Schema::create('schools', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')
+            $table->string('name')->unique()
                   ->comment('学校名称');
-            $table->text('description')->nullable()
+            $table->text('description')->default('')
                   ->comment('学校简介');
             $table->timestamps();
         });

@@ -18,7 +18,7 @@ class CreateVehiclesTable extends Migration {
                   ->comment('车辆类型id');
             $table->string('name')
                   ->comment('车辆名称');
-            $table->string('pic', config('app.max_url_length'))->nullable()
+            $table->string('pic', config('app.max_url_length'))->default('')
                   ->comment('车辆照片的URL');
             $table->timestamps();
 

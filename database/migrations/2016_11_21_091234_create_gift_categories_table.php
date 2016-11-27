@@ -14,7 +14,7 @@ class CreateGiftCategoriesTable extends Migration
     {
         Schema::create('gift_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')
+            $table->string('name')->unique()
                 ->comment('礼物名称');
             $table->text('description')
                 ->comment('礼物的详细介绍');

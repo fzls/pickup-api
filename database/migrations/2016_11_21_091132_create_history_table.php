@@ -16,27 +16,27 @@ class CreateHistoryTable extends Migration {
                   ->comment('乘客id');
             $table->unsignedInteger('driver_id')
                   ->comment('司机id');
-            $table->string('start_name')
+            $table->string('start_name')->default('')
                   ->comment('起点名称');
-            $table->decimal('start_latitude', config("app.gps_precision.total"), config("app.gps_precision.digits"))
+            $table->decimal('start_latitude', config('app.gps_precision.total'), config('app.gps_precision.digits'))
                   ->comment('起点纬度');
-            $table->decimal('start_longitude', config("app.gps_precision.total"), config("app.gps_precision.digits"))
+            $table->decimal('start_longitude', config('app.gps_precision.total'), config('app.gps_precision.digits'))
                   ->comment('起点经度');
-            $table->string('end_name')
+            $table->string('end_name')->default('')
                   ->comment('终点名称');
-            $table->decimal('end_latitude', config("app.gps_precision.total"), config("app.gps_precision.digits"))
+            $table->decimal('end_latitude', config('app.gps_precision.total'), config('app.gps_precision.digits'))
                   ->comment('终点纬度');
-            $table->decimal('end_longitude', config("app.gps_precision.total"), config("app.gps_precision.digits"))
+            $table->decimal('end_longitude', config('app.gps_precision.total'), config('app.gps_precision.digits'))
                   ->comment('终点经度');
-            $table->decimal('distance', config("app.distance_precision.total"), config("app.distance_precision.digits"))
+            $table->decimal('distance', config('app.distance_precision.total'), config('app.distance_precision.digits'))->default(0)
                   ->comment('行程距离');
-            $table->unsignedInteger('elapsed_time')
+            $table->unsignedInteger('elapsed_time')->default(0)
                   ->comment('行程时间');
-            $table->decimal('base_amount', config("app.money_precision.total"), config("app.money_precision.digits"))
+            $table->decimal('base_amount', config('app.money_precision.total'), config('app.money_precision.digits'))->default(0)
                   ->comment('基本金额');
-            $table->decimal('gift_amount', config("app.money_precision.total"), config("app.money_precision.digits"))
+            $table->decimal('gift_amount', config('app.money_precision.total'), config('app.money_precision.digits'))->default(0)
                   ->comment('额外礼物金额');
-            $table->decimal('penalty_amount', config("app.money_precision.total"), config("app.money_precision.digits"))
+            $table->decimal('penalty_amount', config('app.money_precision.total'), config('app.money_precision.digits'))->default(0)
                   ->comment('超时未支付罚金');
             $table->timestamp('started_at')->nullable()
                   ->comment('开始于,若为null则表明未开始');

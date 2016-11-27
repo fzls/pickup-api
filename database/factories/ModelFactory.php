@@ -47,9 +47,9 @@ function set_current_time_if_win_lottery($ratio = 0.1) {
 $factory->define(User::class, function (Faker\Generator $faker) {
     return [
         'id'             => $faker->unique()->randomNumber(4),
-        'username'       => $faker->userName,
-        'email'          => $faker->email,
-        'phone'          => $faker->phoneNumber,
+        'username'       => $faker->unique()->userName,
+        'email'          => $faker->unique()->email,
+        'phone'          => $faker->unique()->phoneNumber,
         'avatar'         => $faker->imageUrl(),
         /* RE:如果单独生成该类，则需要指定外键的值，若从school附加生成该类，则无需指定*/
         'school_id'      => $faker->randomNumber(),/*如果单独生成该类，则覆盖其为 => factory(School::class)->create()->id*/
@@ -65,7 +65,7 @@ $factory->define(User::class, function (Faker\Generator $faker) {
 /*学校*/
 $factory->define(School::class, function (Faker\Generator $faker) {
     return [
-        'name'        => $faker->company,
+        'name'        => $faker->unique()->company,
         'description' => $faker->realText(),
     ];
 });
@@ -149,7 +149,7 @@ $factory->define(Withdraw::class, function (Faker\Generator $faker) {
 /*礼品类别*/
 $factory->define(GiftCategory::class, function (Faker\Generator $faker) {
     return [
-        'name'        => $faker->lastName,
+        'name'        => $faker->unique()->lastName,
         'description' => $faker->realText(),
         'pic'         => $faker->imageUrl(),
         'price'       => $faker->randomNumber(1),
