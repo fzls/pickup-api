@@ -19,9 +19,8 @@ use PickupApi\TokenUtil;
 Route::get('/test', function (Request $request) {
 //    return RestResponse::json(\PickupApi\Utils\UrlUtil::getAllSupportedMethods(),NO_LINK_NEEDED);
     $token = Cache::get($request->bearerToken());
-    $user_info_from_oauth_server = collect(\PickupApi\Utils\TokenUtil::getUserInfo());
 
-    return RestResponse::json($user_info_from_oauth_server, PICKUP_NO_LINK_NEEDED);
+    return RestResponse::json(\Carbon\Carbon::now()->toDateString(), PICKUP_NO_LINK_NEEDED);
 });
 
 Route::post('/test', function (\Request $request) {
@@ -123,7 +122,7 @@ Route::group([/*排行榜相关接口*/], function (){
 */
 });
 
-/*RE: 从这里开始哟~*/
+/*RE: 这个还没做呢~*/
 Route::group([/*聊天接口*/], function (){
     Route::get('/chats', 'ChatController@getChats');
     Route::get('/chats/{pal}', 'ChatController@getChatsWith');
@@ -134,6 +133,7 @@ Route::group([/*聊天接口*/], function (){
     Route::delete('/chats/{pal}/{chat}', 'ChatController@deleteChatWith');
 });
 
+/*RE: 这个还没做呢~*/
 Route::group([/*通知相关接口*/],function (){
     Route::get('/notifications', 'NotificationController@getNotifications');
     Route::post('/notifications', 'NotificationController@newNotification');
@@ -150,6 +150,7 @@ Route::group([/*签到相关接口*/], function (){
     Route::post('/checkin', 'CheckinController@checkin');
 });
 
+/*RE: 这个还没做呢~*/
 Route::group([/*搜索相关接口*/], function (){
     Route::get('/search', 'SearchController@search');
 });

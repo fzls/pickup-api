@@ -141,10 +141,35 @@ return [
         'digits' => 4,
     ],
 
-    'ranking_types' =>[
+    'ranking_types' => [
         'highest_rated_drivers',
         'most_attractive_drivers',
         'highest_rated_passengers',
+    ],
+
+    'min_checkin_credit' => 50,
+    'max_checkin_credit' => 500,
+    'about'              => [
+        'project_name' => 'Pickup',
+        'version'      => '0.1.0',
+        'member'=>[
+            '陈计',
+            '张剑富',
+            '李浩铭',
+            '谭惠中',
+            '陈秋宇',
+            '马清'
+        ],
+        'release_time'=> '2016/11/27',
+        'description'=>'Pickup 是一款旨在有效利用校内空闲的车后座，同时增加同学间沟通机会的应用',
+        'contact'=> 'meow@gmail.com <人家才不告诉你呢，哼~'
+    ],
+    'help' =>[
+        'FAQ'=>[
+            '这个应用是什么，可以吃吗？'=>'不可以吃哦，我们是一款旨在有效利用校内空闲的车后座，同时增加同学间沟通机会的应用',
+            '界面为什么看上去这么丑呀？'=>'因为窝不是专门搞前端的呀',
+            '喵喵喵，喵喵？'=>'喵~',
+        ]
     ],
 
     /*
