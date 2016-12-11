@@ -44,8 +44,8 @@ class CurrentLocationController extends Controller
         $this->validate(
             $this->request,
             [
-                'latitude'  => 'required|numeric|min:-180|max:180',
-                'longitude' => 'required|numeric|min:-90|max:90',
+                'latitude'  => 'required|numeric|min:-90|max:90',
+                'longitude' => 'required|numeric|min:-180|max:180',
             ]
         );
 

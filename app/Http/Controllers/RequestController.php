@@ -21,7 +21,7 @@ class RequestController extends Controller {
      * @throws \InvalidArgumentException
      */
     public function getRequestList() {
-        return RestResponse::paginated(\PickupApi\Models\Request::query());
+        return RestResponse::paginated(\PickupApi\Models\Request::with('vehicle'));
     }
 
     /**
@@ -30,15 +30,16 @@ class RequestController extends Controller {
      * @return RestResponse
      */
     public function addNewRequestToList() {
+        /*note: longitude是经度，latitude是纬度*/
         $this->validate(
             $this->request,
             [
                 'start_name'            => 'string',
-                'start_latitude'        => 'required|numeric|min:-180|max:180',
-                'start_longitude'       => 'required|numeric|min:-90|max:90',
+                'start_latitude'        => 'required|numeric|min:-90|max:90',
+                'start_longitude'       => 'required|numeric|min:-180|max:180',
                 'end_name'              => 'string',
-                'end_latitude'          => 'required|numeric|min:-180|max:180',
-                'end_longitude'         => 'required|numeric|min:-90|max:90',
+                'end_latitude'          => 'required|numeric|min:-90|max:90',
+                'end_longitude'         => 'required|numeric|min:-180|max:180',
                 'expected_vehicle_type' => 'exists:vehicle_types,id',
                 'activity'              => 'string',
                 'phone_number'          => 'required|regex:/\d{11}/',

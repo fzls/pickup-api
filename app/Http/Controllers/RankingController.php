@@ -29,16 +29,24 @@ class RankingController extends Controller {
     /**
      * 获取某种类型的排行榜
      *
-     * @param     $type
-     * @param int $interval
-     * @param int $count
+     * @param $type
      *
      * @return RestResponse
      * @throws \PickupApi\Exceptions\InvalidOperationException
+     * @internal param int $interval
+     * @internal param int $count
+     *
      */
-    public function getRankingOfType($type, $interval = 1, $count = 10) {
-        $interval = (int)$interval;
-        $count    = (int)$count;
+    public function getRankingOfType($type) {
+        $this->validate(
+            $this->request,
+            [
+                'interval'=> 'integer|min:1',
+                'count' => 'integer|min:1'
+            ]
+        );
+        $interval = $this->request->exists('interval')? (int)$this->request->get('interval') : 7;
+        $count = $this->request->exists('count')? (int)$this->request->get('count') : 10;
 
         $this->assertTypeIsValid($type);
 
@@ -169,7 +177,7 @@ class RankingController extends Controller {
     public function assertTypeIsValid($type) {
         $types = config('app.ranking_types');
         if (! in_array($type, $types)) {
-            throw new InvalidOperationException('人家不支持这种排序啦, 试试下面这些排序种类？ ' . implode(', ', $types));
+            throw new InvalidOperationException('人家不支持这种排行榜啦, 试试下面这些排行榜种类？ ' . implode(', ', $types));
         }
     }
 }

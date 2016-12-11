@@ -32,8 +32,8 @@ class UserController extends Controller {
         );
 
         $user_info_from_oauth_server = collect(TokenUtil::getUserInfo())
-            ->only(['id', 'username', 'email', 'phone', 'avatar']);
-        $info                        = array_merge($this->request->only('school_id'), $user_info_from_oauth_server);
+            ->only(['id', 'username', 'email', 'phone', 'avatar'])->toArray();
+        $info                        = array_merge($this->request->only('school_id'),['description'=>''], $user_info_from_oauth_server);
         $user                        = User::find(TokenUtil::getUserId());
 
         if ($user) {
@@ -42,7 +42,6 @@ class UserController extends Controller {
         } else {
             /*否则新建用户,并且默认未激活，TODO:需要验证浙大邮箱后激活*/
             $user = User::create($info);
-            $user->delete();
             return RestResponse::created($user, '新的小伙伴加入了呢，不过别忘了先去找浙大喵激活才能跟我一起玩哦~');
         }
     }

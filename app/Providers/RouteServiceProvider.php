@@ -37,7 +37,6 @@ class RouteServiceProvider extends ServiceProvider {
         \Route::pattern('withdraw', $regex_id);
         \Route::pattern('payment', $regex_id);
         \Route::pattern('revenue', $regex_id);
-        \Route::pattern('interval', $regex_id);
 
         parent::boot();
     }

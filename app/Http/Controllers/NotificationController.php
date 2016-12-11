@@ -3,7 +3,9 @@
 namespace PickupApi\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PickupApi\Http\RestResponse;
 use PickupApi\Models\Notification;
+use PickupApi\Utils\TokenUtil;
 
 /**
  * Class NotificationController
@@ -13,9 +15,10 @@ class NotificationController extends Controller
 {
     /**
      * 获取用户的所有通知
+     * @throws \InvalidArgumentException
      */
     public function getNotifications(){
-
+        return RestResponse::paginated(TokenUtil::getUser()->notifications()->getQuery());
     }
 
     /**

@@ -31,6 +31,7 @@ class User extends Model {
             'money',
             'checkin_points',
             'charm_points',
+            'actived_at',
             'freezed_at',
         ];
 

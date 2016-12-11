@@ -36,6 +36,7 @@ Route::post('/test', function (\Request $request) {
 });
 
 Route::group([/*用户相关接口*/], function () {
+    /* TODO：-later 添加浙大邮箱激活流程*/
     Route::get('/users', 'UserController@getUsersProfile');
     Route::post('/users', 'UserController@addNewUser');
     Route::get('/users/{user}', 'UserController@getUserProfile');
@@ -43,6 +44,12 @@ Route::group([/*用户相关接口*/], function () {
     Route::post('/me', 'UserController@markAsActivated');
     Route::put('/me', 'UserController@updateCurrentUserProfile');
     Route::delete('/me', 'UserController@markAsDeleted');
+});
+
+Route::group([/*学校*/], function (){
+   Route::get('/schools',function (){
+       return RestResponse::paginated(\PickupApi\Models\School::query());
+   });
 });
 
 Route::group([/*常用地点接口*/], function () {
@@ -68,9 +75,28 @@ Route::group([/*车单接口*/], function () {
     Route::post('/requests', 'RequestController@addNewRequestToList');
     Route::put('/requests', 'RequestController@driverAcceptRequest');
     Route::delete('/requests', 'RequestController@passengerCancelRequest');
+
+    Route::get('/request-status', function (){
+       $user= \PickupApi\Utils\TokenUtil::getUser();
+
+       if(! $user->request){
+           /*获取用户当前所处的行程的信息*/
+           $history = \PickupApi\Models\History::where('passenger_id', $user->id)->whereNotNull('started_at')->whereNull('finished_at')->orderBy('id', 'dsec')->take(1)->get();
+
+           return RestResponse::single($history[0], 'accepted');
+       }else{
+           return RestResponse::meta_only(200, 'not yet');
+       }
+    });
 });
 
 Route::group([/*历史行程相关接口*/], function () {
+//    Route::get('/current-history',function (){
+//        $history = \PickupApi\Utils\TokenUtil::getUser()->history()->getQuery()->whereNotNull('started_at')->whereNull('finished_at')->orderBy('id', 'dsec')->take(1)->get();
+//
+//        return RestResponse::single(count($history)===1? $history[0]: null);
+//    });
+
     Route::get('/history', 'HistoryController@getAllHistory');
     Route::get('/history/{history}', 'HistoryController@getHistory');
     Route::delete('/history/{history}', 'HistoryController@finishHistory');
@@ -123,7 +149,7 @@ Route::group([/*评价与投诉接口*/], function (){
 
 Route::group([/*排行榜相关接口*/], function (){
     Route::get('/rankings', 'RankingController@getAllRankings');
-    Route::get('/rankings/{type}/{interval?}/{count?}', 'RankingController@getRankingOfType');
+    Route::get('/rankings/{type}', 'RankingController@getRankingOfType');
     /*获取某一种类型的排行榜{highest_rated_drivers, most_attractive_drivers, most_rated_passengers}
     对象类别分三个，highest_rated_driver_rankings, most_attractive_driver_rankings, most_rated_passenger_rankings，
     时间段类别分过去一天，一周，一月，以及总排行，通过选择时间周期调整，默认显示一周的结果

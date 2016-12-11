@@ -24,7 +24,7 @@ class HistoryController extends Controller {
      * @throws \InvalidArgumentException
      */
     public function getAllHistory() {
-        return RestResponse::paginated(TokenUtil::getUser()->history()->getQuery());
+        return RestResponse::paginated(TokenUtil::getUser()->history()->getQuery()->with(['gift_bundles.gift', 'reviews']));
     }
 
     /**
@@ -64,7 +64,7 @@ class HistoryController extends Controller {
      * @throws \InvalidArgumentException
      */
     public function getAllDriveHistory() {
-        return RestResponse::paginated(TokenUtil::getUser()->drive_history()->getQuery());
+        return RestResponse::paginated(TokenUtil::getUser()->drive_history()->getQuery()->with(['gift_bundles.gift', 'reviews']));
     }
 
     /**

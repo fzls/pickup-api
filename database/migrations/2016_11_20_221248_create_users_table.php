@@ -31,6 +31,8 @@ class CreateUsersTable extends Migration {
                   ->comment('签到赠送的积分，可在购买礼物时使用(1000积分等于1RMB，每次赠送100~500(暂定))');
             $table->unsignedInteger('charm_points')->default(0)
                   ->comment('魅力值 //仅更新，和当redis中无该记录时取回');
+            $table->timestamp('actived_at')->nullable()
+                  ->comment('激活于');
             $table->timestamp('freezed_at')->nullable()
                   ->comment('冻结于');
             $table->softDeletes()
