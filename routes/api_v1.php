@@ -81,7 +81,7 @@ Route::group([/*车单接口*/], function () {
 
        if(! $user->request){
            /*获取用户当前所处的行程的信息*/
-           $history = \PickupApi\Models\History::where('passenger_id', $user->id)->whereNotNull('started_at')->whereNull('finished_at')->orderBy('id', 'dsec')->take(1)->get();
+           $history = \PickupApi\Models\History::where('passenger_id', $user->id)->whereNull('started_at')->whereNull('finished_at')->orderBy('id', 'dsec')->take(1)->get();
 
            return RestResponse::single($history[0], 'accepted');
        }else{
