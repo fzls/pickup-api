@@ -103,7 +103,7 @@ class RequestController extends Controller {
                     'base_amount'     => 0,
                     'gift_amount'     => 0,
                     'penalty_amount'  => 0,
-                    'started_at'      => Carbon::now(),
+                    'started_at'      => null,
                     'reserved_at'     => $request->reserved_at,
                 ]
             );
