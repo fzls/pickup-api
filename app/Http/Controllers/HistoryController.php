@@ -35,7 +35,7 @@ class HistoryController extends Controller {
      * @return RestResponse
      */
     public function getHistory(History $history) {
-        $this->assertIsPassenger($history);
+        $this->assertIsInHistory($history);
 
         return RestResponse::single($history);
     }
@@ -48,7 +48,7 @@ class HistoryController extends Controller {
      * @return RestResponse
      */
     public function finishHistory(History $history) {
-        $this->assertIsPassenger($history);
+        $this->assertIsInHistory($history);
 
         /*TODO：客户端发送两种费用*/
         $history->update(['finished_at' => Carbon::now()]);
@@ -75,7 +75,7 @@ class HistoryController extends Controller {
      * @return RestResponse
      */
     public function getDriveHistory(History $history) {
-        $this->assertIsDriver($history);
+        $this->assertIsInHistory($history);
 
         return RestResponse::single($history);
     }
@@ -103,7 +103,7 @@ class HistoryController extends Controller {
      */
     public function addNewSnapshot(History $history) {
         /*由司机端负责创建*/
-        $this->assertIsDriver($history);
+        $this->assertIsInHistory($history);
 
         $this->validate(
             $this->request,
