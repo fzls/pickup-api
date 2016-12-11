@@ -41,6 +41,22 @@ class HistoryController extends Controller {
     }
 
     /**
+     * 将行程标记为开始（由司机触发）
+     *
+     * @param History $history
+     *
+     * @return RestResponse
+     * @throws \PickupApi\Exceptions\UnauthorizedException
+     */
+    public function startHistory(History $history){
+        $this->assertIsInHistory($history);
+
+        $history->update(['started_at' => Carbon::now()]);
+
+        return RestResponse::meta_only(200, '又要开始一次新的旅行了呢');
+    }
+
+    /**
      * 完成一次行程
      *
      * @param History $history

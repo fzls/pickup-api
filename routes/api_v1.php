@@ -99,6 +99,7 @@ Route::group([/*历史行程相关接口*/], function () {
 
     Route::get('/history', 'HistoryController@getAllHistory');
     Route::get('/history/{history}', 'HistoryController@getHistory');
+    Route::put('/history/{history}', 'HistoryController@startHistory');
     Route::delete('/history/{history}', 'HistoryController@finishHistory');
     Route::get('/drive_history', 'HistoryController@getAllDriveHistory');
     Route::get('/drive_history/{history}', 'HistoryController@getDriveHistory');
