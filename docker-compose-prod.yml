@@ -5,7 +5,7 @@ services:
     # receive http connection from client
     web:
         ports:
-            - 80:80
+            - 2333:80
     lb:
         ports:
-            - 1936:1936
+            - 1936

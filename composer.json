@@ -14,7 +14,6 @@
     "barryvdh/laravel-ide-helper": "^2.2",
     "guzzlehttp/guzzle": "^6.2",
     "doctrine/dbal": "^2.5",
-    "rtlopez/decimal": "^1.0",
     "barryvdh/laravel-cors": "^0.8.2",
     "bugsnag/bugsnag-laravel": "^2.0"
   },

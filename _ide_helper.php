@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.3.22 on 2016-11-22.
+ * Generated for Laravel 5.3.26 on 2016-12-12.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -9,6 +9,154 @@
 
 namespace {
     exit("This file should not be included, only analyzed by your IDE");
+
+    class Bugsnag extends \Bugsnag\BugsnagLaravel\Facades\Bugsnag{
+        
+        /**
+         * Make a new client instance.
+         * 
+         * If you don't pass in a key, we'll try to read it from the env variables.
+         *
+         * @param string|null $apiKey your bugsnag api key
+         * @param string|null $endpoint your bugsnag endpoint
+         * @param bool $default if we should register our default callbacks
+         * @return static 
+         * @static 
+         */
+        public static function make($apiKey = null, $endpoint = null, $defaults = true){
+            return \Bugsnag\Client::make($apiKey, $endpoint, $defaults);
+        }
+        
+        /**
+         * Make a new guzzle client instance.
+         *
+         * @param string|null $base
+         * @param array $options
+         * @return \GuzzleHttp\ClientInterface 
+         * @static 
+         */
+        public static function makeGuzzle($base = null, $options = array()){
+            return \Bugsnag\Client::makeGuzzle($base, $options);
+        }
+        
+        /**
+         * Get the config instance.
+         *
+         * @return \Bugsnag\Configuration 
+         * @static 
+         */
+        public static function getConfig(){
+            return \Bugsnag\Client::getConfig();
+        }
+        
+        /**
+         * Regsier a new notification callback.
+         *
+         * @param callable $callback
+         * @return $this 
+         * @static 
+         */
+        public static function registerCallback($callback){
+            return \Bugsnag\Client::registerCallback($callback);
+        }
+        
+        /**
+         * Regsier all our default callbacks.
+         *
+         * @return $this 
+         * @static 
+         */
+        public static function registerDefaultCallbacks(){
+            return \Bugsnag\Client::registerDefaultCallbacks();
+        }
+        
+        /**
+         * Record the given breadcrumb.
+         *
+         * @param string $name the name of the breadcrumb
+         * @param string|null $type the type of breadcrumb
+         * @param array $metaData additional information about the breadcrumb
+         * @return void 
+         * @static 
+         */
+        public static function leaveBreadcrumb($name, $type = null, $metaData = array()){
+            \Bugsnag\Client::leaveBreadcrumb($name, $type, $metaData);
+        }
+        
+        /**
+         * Clear all recorded breadcrumbs.
+         *
+         * @return void 
+         * @static 
+         */
+        public static function clearBreadcrumbs(){
+            \Bugsnag\Client::clearBreadcrumbs();
+        }
+        
+        /**
+         * Notify Bugsnag of a non-fatal/handled throwable.
+         *
+         * @param \Throwable $throwable the throwable to notify Bugsnag about
+         * @param callable|null $callback the customization callback
+         * @return void 
+         * @static 
+         */
+        public static function notifyException($throwable, $callback = null){
+            \Bugsnag\Client::notifyException($throwable, $callback);
+        }
+        
+        /**
+         * Notify Bugsnag of a non-fatal/handled error.
+         *
+         * @param string $name the name of the error, a short (1 word) string
+         * @param string $message the error message
+         * @param callable|null $callback the customization callback
+         * @return void 
+         * @static 
+         */
+        public static function notifyError($name, $message, $callback = null){
+            \Bugsnag\Client::notifyError($name, $message, $callback);
+        }
+        
+        /**
+         * Notify Bugsnag of the given error report.
+         * 
+         * This may simply involve queuing it for later if we're batching.
+         *
+         * @param \Bugsnag\Report $report the error report to send
+         * @param callable|null $callback the customization callback
+         * @return void 
+         * @static 
+         */
+        public static function notify($report, $callback = null){
+            \Bugsnag\Client::notify($report, $callback);
+        }
+        
+        /**
+         * Notify Bugsnag of a deployment.
+         *
+         * @param string|null $repository the repository from which you are deploying the code
+         * @param string|null $branch the source control branch from which you are deploying
+         * @param string|null $revision the source control revision you are currently deploying
+         * @return void 
+         * @static 
+         */
+        public static function deploy($repository = null, $branch = null, $revision = null){
+            \Bugsnag\Client::deploy($repository, $branch, $revision);
+        }
+        
+        /**
+         * Flush any buffered reports.
+         *
+         * @return void 
+         * @static 
+         */
+        public static function flush(){
+            \Bugsnag\Client::flush();
+        }
+        
+    }
+
 
     class App extends \Illuminate\Support\Facades\App{
         
@@ -2944,8 +3092,12 @@ namespace {
         }
         
         /**
-         * 
+         * Run a select statement against the database and returns a generator.
          *
+         * @param string $query
+         * @param array $bindings
+         * @param bool $useReadPdo
+         * @return \Generator 
          * @static 
          */
         public static function cursor($query, $bindings = array(), $useReadPdo = true){
@@ -7202,11 +7354,12 @@ namespace {
          *
          * @param int $status
          * @param array $headers
+         * @param string $fallback
          * @return \Illuminate\Http\RedirectResponse 
          * @static 
          */
-        public static function back($status = 302, $headers = array()){
-            return \Illuminate\Routing\Redirector::back($status, $headers);
+        public static function back($status = 302, $headers = array(), $fallback = false){
+            return \Illuminate\Routing\Redirector::back($status, $headers, $fallback);
         }
         
         /**
@@ -9013,7 +9166,7 @@ namespace {
          * It works if your JavaScript library sets an X-Requested-With HTTP header.
          * It is known to work with common JavaScript frameworks:
          *
-         * @link http://en.wikipedia.org/wiki/List_of_Ajax_frameworks#JavaScript
+         * @see http://en.wikipedia.org/wiki/List_of_Ajax_frameworks#JavaScript
          * @return bool true if the request is an XMLHttpRequest, false otherwise
          * @static 
          */
@@ -9926,12 +10079,12 @@ namespace {
          *
          * @param string $table
          * @param \Closure $callback
-         * @return \Illuminate\Database\Schema\Blueprint 
+         * @return void 
          * @static 
          */
         public static function table($table, $callback){
             //Method inherited from \Illuminate\Database\Schema\Builder            
-            return \Illuminate\Database\Schema\MySqlBuilder::table($table, $callback);
+            \Illuminate\Database\Schema\MySqlBuilder::table($table, $callback);
         }
         
         /**
@@ -11942,4 +12095,6 @@ namespace {
 
 
 }
+
+
 
