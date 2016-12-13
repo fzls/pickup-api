@@ -6,6 +6,10 @@ services:
     web:
         ports:
             - 2333:80
+            - 2334:443
+        volumes:
+            - /etc/letsencrypt:/etc/letsencrypt
+            - /etc/ssl/certs/dhparam.pem:/etc/ssl/certs/dhparam.pem
     lb:
         ports:
             - 1936
