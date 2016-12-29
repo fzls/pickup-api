@@ -51,18 +51,18 @@ class DatabaseSeeder extends Seeder {
         $cnt_vehicle_type                    = 5 * $scale;
         $cnt_gift_category                   = 20 * $scale;
         $cnt_feedback_type                   = 5 * $scale;
-        $cnt_user                            = 30 * $scale;
+        $cnt_user                            = 5 * $scale;
         $cnt_vehicle_per_user                = 2 * $scale;
         $cnt_frequent_used_location_per_user = 5 * $scale;
-        $cnt_recharge_per_user               = 20 * $scale;
+        $cnt_recharge_per_user               = 10 * $scale;
         $cnt_withdraw_per_user               = 5 * $scale;
         $cnt_feedback_session_per_user       = 5 * $scale;
         $cnt_feedback_per_session_per_user   = 8 * $scale;
         $cnt_notification_per_user           = 8 * $scale;
         $cnt_checkin_history_per_user        = 20 * $scale;
-        $cnt_chat                            = 3000 * $scale;
-        $cnt_history                         = 1000 * $scale;
-        $cnt_snapshot_per_history            = 8 * $scale;
+        $cnt_chat                            = 300 * $scale;
+        $cnt_history                         = 100 * $scale;
+        $cnt_snapshot_per_history            = 3 * $scale;
         $cnt_gift_bundle_per_history         = 3 * $scale;
 
         $percent_passenger_review = 80;
