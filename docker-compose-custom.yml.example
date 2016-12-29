@@ -3,10 +3,10 @@ version: '2'
 services:
     db:
         environment:
-            - MYSQL_DATABASE=XXXXX
-            - MYSQL_ROOT_PASSWORD=YYYYY
-            - MYSQL_USER=ZZZZZ
-            - MYSQL_PASSWORD=VVVVV
+            - MYSQL_DATABASE=api
+            - MYSQL_ROOT_PASSWORD=SECRET
+            - MYSQL_USER=api
+            - MYSQL_PASSWORD=SECRET
     volumes_code:
         volumes:
             - .:/code
