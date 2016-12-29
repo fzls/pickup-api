@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder {
         $cnt_vehicle_type                    = 5 * $scale;
         $cnt_gift_category                   = 20 * $scale;
         $cnt_feedback_type                   = 5 * $scale;
-        $cnt_user                            = 5 * $scale;
+        $cnt_user                            = 10 * $scale;
         $cnt_vehicle_per_user                = 2 * $scale;
         $cnt_frequent_used_location_per_user = 5 * $scale;
         $cnt_recharge_per_user               = 10 * $scale;
